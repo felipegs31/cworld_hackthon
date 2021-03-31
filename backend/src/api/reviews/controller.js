@@ -83,7 +83,7 @@ export const show = ({ params }, res, next) =>
 export const update = async ({ user, bodymen: { body }, params }, res, next) => {
   try {
     const restaurant = await Restaurants.findOne({ _id: body.restaurant})
-    if(!isEmpty(Restaurants)) {
+    if(!isEmpty(restaurant)) {
       const review = await Reviews.findById(params.id).populate('user')
       const auth = await authorOrAdmin(res, user, 'user')(review)
 
@@ -112,16 +112,32 @@ export const update = async ({ user, bodymen: { body }, params }, res, next) => 
       return res.status(409)
     }
   } catch (error) {
-    console.log(error)
     return res.status(500).json({error})
   }
 }
 
 
-export const destroy = ({ user, params }, res, next) =>
-  Reviews.findById(params.id)
-    .then(notFound(res))
-    .then(authorOrAdmin(res, user, 'user'))
-    .then((reviews) => reviews ? reviews.remove() : null)
-    .then(success(res, 204))
-    .catch(next)
+export const destroy = async({ user, params }, res, next) => {
+  try {
+    const review = await Reviews.findById(params.id).populate('user')
+    const auth = await authorOrAdmin(res, user, 'user')()
+    if(!isEmpty(review)) {
+      const restaurant = await Restaurants.findOne({ _id: review.restaurant})
+
+      // remove star
+      const indexRateRemove = review.rate
+      const keyRemove = Object.keys(restaurant.rates)[indexRateRemove]
+      restaurant.rates[keyRemove] = restaurant.rates[keyRemove] > 0 ? restaurant.rates[keyRemove] - 1 : 0
+
+      await restaurant.save()
+      await review.remove()
+      return res.status(201).json({
+        success: true
+      })
+    } else {
+      return res.status(409)
+    }
+  } catch (error) {
+    return res.status(500).json({error})
+  }
+}

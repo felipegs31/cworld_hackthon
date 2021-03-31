@@ -22,9 +22,15 @@ import * as actions from './../../state/actions';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DoneIcon from '@material-ui/icons/Done';
 import DateFnsUtils from '@date-io/date-fns';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const useStyles = makeStyles(theme => ({
   modalContainer: {
     padding: 30,
+  },
+  modalHeader: {
+    display: 'flex',
+    justifyContent: 'space-between'
   },
   submitContainer: {
     display: 'flex',
@@ -64,6 +70,7 @@ const ReviewModal: React.FC = () => {
 
 
   const reviewToEdit: IReview = useSelector((state: IApplicationState) => state.restaurantDetail.reviewToEdit)
+  const reviewModalLoading: boolean = useSelector((state: IApplicationState) => state.restaurantDetail.reviewModalLoading)
 
 
   useEffect(() => {
@@ -121,10 +128,17 @@ const ReviewModal: React.FC = () => {
 
   }
 
+  const handleDeleteReview = () => {
+    dispatch(actions.deleteReview())
+  }
+
 
   return (
     <form className={classes.modalContainer} onSubmit={handleSubmit}>
-      <Typography variant='h6'>{isNewData ? 'New Review' : 'Edit Review'}</Typography>
+      <div className={classes.modalHeader}>
+        <Typography variant='h6'>{isNewData ? 'New Review' : 'Edit Review'}</Typography>
+        <IconButton disabled={reviewModalLoading} onClick={() => handleDeleteReview()}><DeleteIcon /></IconButton>
+      </div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           required
@@ -163,7 +177,7 @@ const ReviewModal: React.FC = () => {
         />
       </FormControl>
       <div className={classes.submitContainer}>
-        <IconButton type="submit"><DoneIcon className={classes.submitButton} fontSize='large'/></IconButton>
+        <IconButton disabled={reviewModalLoading} type="submit"><DoneIcon className={classes.submitButton} fontSize='large'/></IconButton>
       </div>
     </form>
   )

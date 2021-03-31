@@ -22,6 +22,7 @@ import { IPayload } from '../../../../../utils/models/IPayload';
 import ReviewsCard from './../ReviewsCard/ReviewsCard';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import * as actions from './../../state/actions';
+import SpinnerOverlay from '../../../../../design-system/SpinnerOverlay/SpinnerOverlay';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -56,6 +57,10 @@ const useStyles = makeStyles(() => ({
   },
   reviewContainer: {
     width: '100%'
+  },
+  noReviewMessage: {
+    color: '#d1d7dc',
+    marginTop: 10
   }
 }))
 
@@ -66,10 +71,20 @@ const Reviews: React.FC = () => {
   const classes = useStyles()
 
   const reviews: IPayload<IReview[]> = useSelector((state: IApplicationState) => state.restaurantDetail.reviews)
+  const loadingReviews: boolean = useSelector((state: IApplicationState) => state.restaurantDetail.loadingReviews)
 
   const handleOpenReviewModal = () => {
     dispatch(actions.openReviewModal())
   }
+
+  const reviewsRender = () => (
+    reviews.rows.map((review, index) =>
+      <div className={classes.reviewContainer} key={review.id}>
+        <ReviewsCard review={review}/>
+        {index < reviews.rows.length - 1 && <div className={classes.devider}></div>}
+      </div>
+    )
+  )
 
   return (
     <Paper className={classes.container}>
@@ -84,12 +99,12 @@ const Reviews: React.FC = () => {
           Make Review
         </Button>
       </div>
-      {!isEmpty(reviews.rows) && reviews.rows.map((review, index) =>
-        <div className={classes.reviewContainer} key={review.id}>
-          <ReviewsCard review={review}/>
-          {index < reviews.rows.length - 1 && <div className={classes.devider}></div>}
-        </div>
-      )}
+      {loadingReviews ?
+        <SpinnerOverlay /> :
+        !isEmpty(reviews.rows) ?
+          reviewsRender() :
+          <div className={classes.noReviewMessage}>No Review Found</div>
+      }
     </Paper>
 )
 }

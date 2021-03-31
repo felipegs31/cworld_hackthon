@@ -11,7 +11,9 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     height: "100%",
     opacity: "1",
-    zIndex: 2
+    zIndex: 2,
+    top: 0,
+    left: 0
   },
 }));
 

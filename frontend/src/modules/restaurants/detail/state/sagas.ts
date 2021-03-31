@@ -1,9 +1,11 @@
 import { ActionTypes } from './types'
 import { all, fork, takeLatest } from 'redux-saga/effects'
-import { handlePostReview, handlePutReview, handleRestaurantDetailRequest,
+import { handlePostReview, handlePutReview,
+        handleRestaurantDetailRequest,
         handleReviewHighestRequest,
         handleReviewLowestRequest,
-        handleReviewsRequest } from './effects'
+        handleReviewsRequest,
+        handleDeleteReview } from './effects'
 
 
 /**
@@ -12,22 +14,28 @@ import { handlePostReview, handlePutReview, handleRestaurantDetailRequest,
 function* watchRestaurantDetail(): Generator {
   yield takeLatest([ActionTypes.RESTAURANT_DETAIL_REQUEST,
                     ActionTypes.POST_REVIEW_SUCCESS,
-                    ActionTypes.PUT_REVIEW_SUCCESS], handleRestaurantDetailRequest)
+                    ActionTypes.PUT_REVIEW_SUCCESS,
+                    ActionTypes.DELETE_REVIEW_SUCCESS], handleRestaurantDetailRequest)
 }
 
 function* watchReviews(): Generator {
   yield takeLatest([ActionTypes.REVIEWS_REQUEST,
                     ActionTypes.POST_REVIEW_SUCCESS,
-                    ActionTypes.PUT_REVIEW_SUCCESS], handleReviewsRequest)
+                    ActionTypes.PUT_REVIEW_SUCCESS,
+                    ActionTypes.DELETE_REVIEW_SUCCESS], handleReviewsRequest)
   yield takeLatest([ActionTypes.REVIEW_HIGHEST_REQUEST,
                     ActionTypes.POST_REVIEW_SUCCESS,
-                    ActionTypes.PUT_REVIEW_SUCCESS], handleReviewHighestRequest)
+                    ActionTypes.PUT_REVIEW_SUCCESS,
+                    ActionTypes.DELETE_REVIEW_SUCCESS], handleReviewHighestRequest)
   yield takeLatest([ActionTypes.REVIEW_LOWEST_REQUEST,
                     ActionTypes.POST_REVIEW_SUCCESS,
-                    ActionTypes.PUT_REVIEW_SUCCESS], handleReviewLowestRequest)
+                    ActionTypes.PUT_REVIEW_SUCCESS,
+                    ActionTypes.DELETE_REVIEW_SUCCESS], handleReviewLowestRequest)
 
   yield takeLatest(ActionTypes.POST_REVIEW, handlePostReview)
   yield takeLatest(ActionTypes.PUT_REVIEW, handlePutReview)
+  yield takeLatest(ActionTypes.DELETE_REVIEW, handleDeleteReview)
+
 
 }
 

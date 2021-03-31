@@ -48,7 +48,6 @@ export const reviewLowestSuccess = (data: IReview) =>
 export const reviewLowestError = (message: string) =>
   action(ActionTypes.REVIEW_LOWEST_ERROR, message)
 
-
 // Open modal Review
 export const openReviewModal = (review?: IReview) =>
   action(ActionTypes.OPEN_REVIEW_MODAL, review)
@@ -75,3 +74,12 @@ export const putReviewSuccess = () =>
 
 export const putReviewError = () =>
   action(ActionTypes.PUT_REVIEW_ERROR)
+
+export const deleteReview = () =>
+  action(ActionTypes.DELETE_REVIEW)
+
+export const deleteReviewSuccess = () =>
+  action(ActionTypes.DELETE_REVIEW_SUCCESS)
+
+export const deleteReviewError = () =>
+  action(ActionTypes.DELETE_REVIEW_ERROR)

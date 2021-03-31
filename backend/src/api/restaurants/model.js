@@ -62,7 +62,7 @@ restaurantsSchema.pre('save', function (next) {
       sumOfStars += this.rates[key] * index
     }
   });
-  const average = round(sumOfStars/sumOfElements, 2)
+  const average = sumOfElements === 0 ? 0 : round(sumOfStars/sumOfElements, 2)
   this.averageRate = average
   next()
 })

@@ -15,7 +15,9 @@ import { restaurantDetailSuccess,
         postReviewSuccess,
         postReviewError,
         putReviewSuccess,
-        putReviewError} from './actions'
+        putReviewError,
+        deleteReviewSuccess,
+        deleteReviewError} from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import { IRestaurant } from '../models/IRestaurant';
 import History from '../../../../History';
@@ -131,6 +133,19 @@ export function* handlePutReview({ type, payload }: {
 		yield put(putReviewSuccess())
 	} catch (err) {
 		yield put(putReviewError())
+	}
+}
+
+export function* handleDeleteReview({ type }: {
+  type: string
+}): Generator{
+	try {
+    const review: IReview | any = yield select((state: IApplicationState) => state.restaurantDetail.reviewToEdit);
+
+    yield API.delete(`reviews/${review.id}`)
+		yield put(deleteReviewSuccess())
+	} catch (err) {
+		yield put(deleteReviewError())
 	}
 }
 

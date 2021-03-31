@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { IReview } from '../../models/IReviews';
 import ReviewsCard from './../ReviewsCard/ReviewsCard';
 import { isEmpty } from 'lodash'
+import SpinnerOverlay from '../../../../../design-system/SpinnerOverlay/SpinnerOverlay';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -16,7 +17,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     padding: 30,
-    marginTop: 20
+    marginTop: 20,
+    position: 'relative'
   },
   avatar: {
     width: '2.75rem',
@@ -35,6 +37,10 @@ const useStyles = makeStyles(() => ({
     fontSize: '1.4rem',
     marginBottom: 10,
     fontWeight: 700
+  },
+  noReviewMessage: {
+    color: '#d1d7dc',
+    marginTop: 10
   }
 }))
 
@@ -44,18 +50,31 @@ const HightlightReview: React.FC = () => {
   const reviewHighest: IReview = useSelector((state: IApplicationState) => state.restaurantDetail.reviewHighest)
   const reviewLowest: IReview = useSelector((state: IApplicationState) => state.restaurantDetail.reviewLowest)
 
+  const loadingReviewHighest: boolean = useSelector((state: IApplicationState) => state.restaurantDetail.loadingReviewHighest)
+  const loadingReviewLowest: boolean = useSelector((state: IApplicationState) => state.restaurantDetail.loadingReviewLowest)
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
         <Paper className={classes.container}>
           <span className={classes.title}>Highest Review</span>
-          {!isEmpty(reviewHighest) && <ReviewsCard review={reviewHighest}/>}
+          {loadingReviewHighest ?
+            <SpinnerOverlay /> :
+            !isEmpty(reviewHighest) ?
+              <ReviewsCard review={reviewHighest}/> :
+              <div className={classes.noReviewMessage}>No Review Found</div>
+          }
         </Paper>
       </Grid>
       <Grid item xs={12} md={6}>
         <Paper className={classes.container}>
           <span className={classes.title}>Lowest Review</span>
-          {!isEmpty(reviewLowest) && <ReviewsCard review={reviewLowest}/>}
+          {loadingReviewLowest ?
+            <SpinnerOverlay /> :
+            !isEmpty(reviewLowest) ?
+              <ReviewsCard review={reviewLowest}/> :
+              <div className={classes.noReviewMessage}>No Review Found</div>
+          }
         </Paper>
       </Grid>
     </Grid>

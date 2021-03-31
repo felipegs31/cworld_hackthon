@@ -56,7 +56,7 @@ const restaurantDetailSuccess = (state: IRestaurantDetailState, {type, payload}:
 
   Object.keys(rates).forEach((key: string, index: number) => {
     return ratesPercent.unshift({
-      percent: Math.round(rates[key]/sum * 100),
+      percent: sum === 0 ? 0 : Math.round(rates[key]/sum * 100),
       stars: index + 1
     })
   })
@@ -145,7 +145,8 @@ const reviewHighestError = (state: IRestaurantDetailState): IRestaurantDetailSta
   return {
     ...state,
     loadingReviewHighest: false,
-    errorReviewHighest: true
+    errorReviewHighest: true,
+    reviewHighest: {} as IReview
   }
 }
 
@@ -172,7 +173,8 @@ const reviewLowestError = (state: IRestaurantDetailState): IRestaurantDetailStat
   return {
     ...state,
     loadingReviewLowest: false,
-    errorReviewLowest: true
+    errorReviewLowest: true,
+    reviewLowest: {} as IReview
   }
 }
 
@@ -196,10 +198,32 @@ const closeReviewModal = (state: IRestaurantDetailState): IRestaurantDetailState
   }
 }
 
+const postReview = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalLoading: true,
+  }
+}
+
 const postReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
   return {
     ...state,
+    reviewModalLoading: false,
     reviewModalOpen: false
+  }
+}
+
+const postReviewError = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalLoading: false
+  }
+}
+
+const putReview = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalLoading: true,
   }
 }
 
@@ -207,7 +231,22 @@ const putReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState
   return {
     ...state,
     reviewModalOpen: false,
+    reviewModalLoading: false,
     reviewToEdit: {} as IReview
+  }
+}
+
+const putReviewError = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalLoading: false
+  }
+}
+
+const deleteReview = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalLoading: true,
   }
 }
 
@@ -215,9 +254,18 @@ const deleteReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailSt
   return {
     ...state,
     reviewModalOpen: false,
+    reviewModalLoading: false,
     reviewToEdit: {} as IReview
   }
 }
+
+const deleteReviewError = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalLoading: false
+  }
+}
+
 
 export const restaurantDetailReducer: Reducer<IRestaurantDetailState> = (
 	state: IRestaurantDetailState = INITIAL_STATE,
@@ -243,9 +291,18 @@ export const restaurantDetailReducer: Reducer<IRestaurantDetailState> = (
 		case ActionTypes.OPEN_REVIEW_MODAL: return openReviewModal(state, action)
 		case ActionTypes.CLOSE_REVIEW_MODAL: return closeReviewModal(state)
 
+		case ActionTypes.POST_REVIEW: return postReview(state)
 		case ActionTypes.POST_REVIEW_SUCCESS: return postReviewSuccess(state)
+		case ActionTypes.POST_REVIEW_ERROR: return postReviewError(state)
+
+		case ActionTypes.PUT_REVIEW: return putReview(state)
 		case ActionTypes.PUT_REVIEW_SUCCESS: return putReviewSuccess(state)
+		case ActionTypes.PUT_REVIEW_ERROR: return putReviewError(state)
+
+		case ActionTypes.DELETE_REVIEW: return deleteReview(state)
 		case ActionTypes.DELETE_REVIEW_SUCCESS: return deleteReviewSuccess(state)
+		case ActionTypes.DELETE_REVIEW_ERROR: return deleteReviewError(state)
+
 
 		default:
 			return state
