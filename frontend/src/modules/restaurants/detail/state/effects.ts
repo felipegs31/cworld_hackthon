@@ -1,3 +1,4 @@
+import { IUser } from './../../../auth/models/IUser';
 import { IReview } from './../models/IReviews';
 import { IPayload } from './../../../../utils/models/IPayload';
 import { put, select } from 'redux-saga/effects'
@@ -10,17 +11,21 @@ import { restaurantDetailSuccess,
         reviewHighestSuccess,
         reviewHighestError,
         reviewLowestSuccess,
-        reviewLowestError } from './actions'
+        reviewLowestError,
+        postReviewSuccess,
+        postReviewError,
+        putReviewSuccess,
+        putReviewError} from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import { IRestaurant } from '../models/IRestaurant';
+import History from '../../../../History';
 
-export function* handleRestaurantDetailRequest({ type, payload }: {
+export function* handleRestaurantDetailRequest({ type }: {
   type: string,
-  payload: string
 }): Generator{
 	try {
-
-    const res: any = yield API.get(`restaurants/${payload}`)
+    const { pathname } = History.location
+    const res: any = yield API.get(`restaurants${pathname}`)
     const data: IRestaurant = res.data
 		yield put(restaurantDetailSuccess(data))
 
@@ -39,10 +44,12 @@ export function* handleReviewsRequest({ type, payload }: {
   payload: string
 }): Generator{
 	try {
+    const user: IUser | any = yield select((state: IApplicationState) => state.auth.user);
 
-    const res: any = yield API.get(`reviews/restaurant/${payload}?sort=-createdAt`)
+    const { pathname } = History.location
+    const res: any = yield API.get(`reviews/restaurant${pathname}?sort=-createdAt`)
     const data: IPayload<IReview[]> = res.data
-		yield put(reviewsSuccess(data))
+		yield put(reviewsSuccess(data, user))
 
 	} catch (err) {
 		if (err instanceof Error) {
@@ -58,8 +65,8 @@ export function* handleReviewHighestRequest({ type, payload }: {
   payload: string
 }): Generator{
 	try {
-
-    const res: any = yield API.get(`reviews/restaurant/${payload}/highest`)
+    const { pathname } = History.location
+    const res: any = yield API.get(`reviews/restaurant${pathname}/highest`)
     const data: IReview = res.data
 		yield put(reviewHighestSuccess(data))
 
@@ -77,8 +84,8 @@ export function* handleReviewLowestRequest({ type, payload }: {
   payload: string
 }): Generator{
 	try {
-
-    const res: any = yield API.get(`reviews/restaurant/${payload}/lowest`)
+    const { pathname } = History.location
+    const res: any = yield API.get(`reviews/restaurant${pathname}/lowest`)
     const data: IReview = res.data
 		yield put(reviewLowestSuccess(data))
 
@@ -88,6 +95,42 @@ export function* handleReviewLowestRequest({ type, payload }: {
 		} else {
 			yield put(reviewLowestError('An unknown error occured.'))
 		}
+	}
+}
+
+export function* handlePostReview({ type, payload }: {
+  type: string,
+  payload: IReview
+}): Generator{
+	try {
+    const restaurant: IRestaurant | any = yield select((state: IApplicationState) => state.restaurantDetail.restaurant);
+    const body = {
+      ...payload,
+      restaurant: restaurant.id
+    }
+    yield API.post(`reviews`, body)
+		yield put(postReviewSuccess())
+	} catch (err) {
+		yield put(postReviewError())
+	}
+}
+
+export function* handlePutReview({ type, payload }: {
+  type: string,
+  payload: IReview
+}): Generator{
+	try {
+    const restaurant: IRestaurant | any = yield select((state: IApplicationState) => state.restaurantDetail.restaurant);
+    const review: IReview | any = yield select((state: IApplicationState) => state.restaurantDetail.reviewToEdit);
+
+    const body = {
+      ...payload,
+      restaurant: restaurant.id
+    }
+    yield API.put(`reviews/${review.id}`, body)
+		yield put(putReviewSuccess())
+	} catch (err) {
+		yield put(putReviewError())
 	}
 }
 

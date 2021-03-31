@@ -8,7 +8,8 @@ import {
   Card,
   CardContent,
   Typography,
-  CardHeader
+  CardHeader,
+  Dialog
 } from '@material-ui/core/'
 import * as actions from './../state/actions';
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,6 +21,8 @@ import Ratings from './../components/Ratings/Ratings'
 
 import { IRestaurant } from '../models/IRestaurant';
 import Reviews from '../components/Reviews/Reviews';
+import HightlightReview from '../components/HightlightReview/HightlightReview';
+import ReviewModal from '../components/ReviewModal/ReviewModal';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,39 +34,52 @@ const useStyles = makeStyles(theme => ({
 const Restaurant: React.FC = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { id } = useParams<{ id: string }>();
 
   const restaurant: IRestaurant = useSelector((state: IApplicationState) => state.restaurantDetail.restaurant)
+  const reviewModalOpen: boolean = useSelector((state: IApplicationState) => state.restaurantDetail.reviewModalOpen)
 
-  const restaurantDetailRequest = (id: string) => {
-    dispatch(actions.restaurantDetailRequest(id))
+
+  const restaurantDetailRequest = () => {
+    dispatch(actions.restaurantDetailRequest())
   }
 
-  const reviewsRequest = (id: string) => {
-    dispatch(actions.reviewsRequest(id))
+  const reviewsRequest = () => {
+    dispatch(actions.reviewsRequest())
   }
 
-  const reviewHighestRequest = (id: string) => {
-    dispatch(actions.reviewHighestRequest(id))
+  const reviewHighestRequest = () => {
+    dispatch(actions.reviewHighestRequest())
   }
 
-  const reviewLowestRequest = (id: string) => {
-    dispatch(actions.reviewLowestRequest(id))
+  const reviewLowestRequest = () => {
+    dispatch(actions.reviewLowestRequest())
+  }
+
+  const handleCloseReviewModal = () => {
+    dispatch(actions.closeReviewModal())
   }
 
   useEffect(() => {
-    restaurantDetailRequest(id)
-    reviewsRequest(id)
-    reviewHighestRequest(id)
-    reviewLowestRequest(id)
-  }, [id])
+    restaurantDetailRequest()
+    reviewsRequest()
+    reviewHighestRequest()
+    reviewLowestRequest()
+  }, [])
 
   return (
     <div className={classes.root}>
       <Header />
       <Ratings />
-      {/* <HightlightReview /> */}
+      <HightlightReview />
       <Reviews />
+      <Dialog
+        scroll='body'
+        fullWidth
+        open={reviewModalOpen}
+        onClose={() => handleCloseReviewModal()}
+      >
+        <ReviewModal/>
+      </Dialog>
     </div>
 )
 }

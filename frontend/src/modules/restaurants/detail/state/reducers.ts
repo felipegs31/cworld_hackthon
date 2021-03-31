@@ -1,9 +1,11 @@
+import { IUser } from './../../../auth/models/IUser';
 import { IReview } from './../models/IReviews';
 import { IPayload } from './../../../../utils/models/IPayload';
 import { IRestaurant } from './../models/IRestaurant';
 import { Reducer } from 'redux';
 import { ActionTypes, IRestaurantDetailState } from './types'
 import { IRatesPercent } from '../models/IRatesPercent';
+import { isEmpty } from 'lodash';
 
 export const INITIAL_STATE: IRestaurantDetailState = {
 	loading: false,
@@ -24,7 +26,11 @@ export const INITIAL_STATE: IRestaurantDetailState = {
 
   reviewLowest: {} as IReview,
   loadingReviewLowest: false,
-  errorReviewLowest: false
+  errorReviewLowest: false,
+
+  reviewModalOpen: false,
+  reviewToEdit: {} as IReview,
+  reviewModalLoading: false
 }
 
 
@@ -82,12 +88,29 @@ const reviewsRequest = (state: IRestaurantDetailState) :IRestaurantDetailState =
 
 const reviewsSuccess = (state: IRestaurantDetailState, {type, payload}: {
   type: string,
-  payload: IPayload<IReview[]>
+  payload: {data: IPayload<IReview[]>, user: IUser}
 } ): IRestaurantDetailState => {
+  const reviewWithEdit: IReview[] = payload.data.rows.map(review => {
+    if (payload.user && (payload.user.role === 'admin'|| review.user.id === payload.user.id)) {
+      return {
+        ...review,
+        editable: true
+      }
+    } else {
+      return {
+        ...review,
+        editable: false
+      }
+    }
+  })
+
   return {
     ...state,
     loadingReviews: false,
-    reviews: payload,
+    reviews: {
+      count: payload.data.count,
+      rows: reviewWithEdit
+    }
   }
 }
 
@@ -153,6 +176,49 @@ const reviewLowestError = (state: IRestaurantDetailState): IRestaurantDetailStat
   }
 }
 
+const openReviewModal = (state: IRestaurantDetailState, {type, payload}: {
+  type: string,
+  payload: IReview
+} ): IRestaurantDetailState => {
+
+  return {
+    ...state,
+    reviewModalOpen: true,
+    reviewToEdit: !isEmpty(payload) ? payload : {} as IReview
+  }
+}
+
+const closeReviewModal = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalOpen: false,
+    reviewToEdit: {} as IReview
+  }
+}
+
+const postReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalOpen: false
+  }
+}
+
+const putReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalOpen: false,
+    reviewToEdit: {} as IReview
+  }
+}
+
+const deleteReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
+  return {
+    ...state,
+    reviewModalOpen: false,
+    reviewToEdit: {} as IReview
+  }
+}
+
 export const restaurantDetailReducer: Reducer<IRestaurantDetailState> = (
 	state: IRestaurantDetailState = INITIAL_STATE,
 	action: any
@@ -173,6 +239,13 @@ export const restaurantDetailReducer: Reducer<IRestaurantDetailState> = (
     case ActionTypes.REVIEW_LOWEST_REQUEST: return reviewLowestRequest(state)
 		case ActionTypes.REVIEW_LOWEST_SUCCESS: return reviewLowestSuccess(state, action)
 		case ActionTypes.REVIEW_LOWEST_ERROR: return reviewLowestError(state)
+
+		case ActionTypes.OPEN_REVIEW_MODAL: return openReviewModal(state, action)
+		case ActionTypes.CLOSE_REVIEW_MODAL: return closeReviewModal(state)
+
+		case ActionTypes.POST_REVIEW_SUCCESS: return postReviewSuccess(state)
+		case ActionTypes.PUT_REVIEW_SUCCESS: return putReviewSuccess(state)
+		case ActionTypes.DELETE_REVIEW_SUCCESS: return deleteReviewSuccess(state)
 
 		default:
 			return state

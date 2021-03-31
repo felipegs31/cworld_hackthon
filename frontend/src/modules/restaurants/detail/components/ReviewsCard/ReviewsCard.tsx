@@ -9,7 +9,7 @@ import {
   LinearProgress,
   Grid
 } from '@material-ui/core/'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import Rating from '@material-ui/lab/Rating';
 import { IRestaurant } from '../../models/IRestaurant';
@@ -17,6 +17,8 @@ import { isEmpty } from 'lodash'
 import { IRatesPercent } from '../../models/IRatesPercent';
 import { IReview } from '../../models/IReviews';
 import { IPayload } from '../../../../../utils/models/IPayload';
+import EditIcon from '@material-ui/icons/Edit';
+import * as actions from './../../state/actions';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -44,16 +46,23 @@ const useStyles = makeStyles(theme => ({
 }))
 
 interface props {
-  review: IReview
+  review: IReview,
+  canEdit?: boolean
 }
 
-const ReviewsCard: React.FC<props> = ({ review }: props) => {
+const ReviewsCard: React.FC<props> = ({ review, canEdit }: props) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const handleOpenReviewModal = (review: IReview) => {
+    dispatch(actions.openReviewModal(review))
+  }
 
   return (
     <div className={classes.container}>
       <div>
         <Avatar src={review.user.picture} className={classes.avatar} />
+        <IconButton onClick={() => handleOpenReviewModal(review)}><EditIcon /></IconButton>
       </div>
       <div className={classes.bodyContainer}>
         <div className={classes.name}>{review.user.name}</div>

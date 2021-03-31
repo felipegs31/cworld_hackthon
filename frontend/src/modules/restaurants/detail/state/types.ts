@@ -21,7 +21,24 @@ export enum ActionTypes {
   REVIEW_LOWEST_REQUEST = '@restaurant_detail/REVIEW_LOWEST_REQUEST',
   REVIEW_LOWEST_SUCCESS = '@restaurant_detail/REVIEW_LOWEST_SUCCESS',
   REVIEW_LOWEST_ERROR = '@restaurant_detail/REVIEW_LOWEST_ERROR',
+
+  OPEN_REVIEW_MODAL = '@restaurant_detail/OPEN_REVIEW_MODAL',
+  CLOSE_REVIEW_MODAL = '@restaurant_detail/CLOSE_REVIEW_MODAL',
+
+  POST_REVIEW = '@restaurant_detail/POST_REVIEW',
+  POST_REVIEW_SUCCESS = '@restaurant_detail/POST_REVIEW_SUCCESS',
+  POST_REVIEW_ERROR = '@restaurant_detail/POST_REVIEW_ERROR',
+
+  PUT_REVIEW = '@restaurant_detail/PUT_REVIEW',
+  PUT_REVIEW_SUCCESS = '@restaurant_detail/PUT_REVIEW_SUCCESS',
+  PUT_REVIEW_ERROR = '@restaurant_detail/PUT_REVIEW_ERROR',
+
+  DELETE_REVIEW = '@restaurant_detail/DELETE_REVIEW',
+  DELETE_REVIEW_SUCCESS = '@restaurant_detail/DELETE_REVIEW_SUCCESS',
+  DELETE_REVIEW_ERROR = '@restaurant_detail/DELETE_REVIEW_ERROR',
+
 }
+
 
 
 /**
@@ -45,5 +62,9 @@ export interface IRestaurantDetailState {
   readonly reviewLowest: IReview
   readonly loadingReviewLowest: boolean
   readonly errorReviewLowest: boolean
+
+  readonly reviewModalOpen: boolean
+  readonly reviewModalLoading: boolean
+  readonly reviewToEdit: IReview
 
 }

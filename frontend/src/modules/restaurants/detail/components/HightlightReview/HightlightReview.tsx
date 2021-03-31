@@ -2,28 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
 import { IApplicationState } from '../../../../../store/roots/rootReducer';
 import {
-  Typography,
-  IconButton,
-  Avatar,
   Paper,
-  LinearProgress,
   Grid
 } from '@material-ui/core/'
 import { useSelector } from 'react-redux'
-import { useHistory } from "react-router-dom";
-import Rating from '@material-ui/lab/Rating';
-import { IRestaurant } from '../../models/IRestaurant';
-import { isEmpty } from 'lodash'
-import { IRatesPercent } from '../../models/IRatesPercent';
 import { IReview } from '../../models/IReviews';
-import { IPayload } from '../../../../../utils/models/IPayload';
-import ReviewsCard from './ReviewsCard';
+import ReviewsCard from './../ReviewsCard/ReviewsCard';
+import { isEmpty } from 'lodash'
 
 const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     padding: 30,
     marginTop: 20
   },
@@ -38,26 +29,37 @@ const useStyles = makeStyles(() => ({
     marginTop: 20,
     marginBottom: 20,
     width: '100%'
+  },
+  title: {
+    color: '#6a6f73',
+    fontSize: '1.4rem',
+    marginBottom: 10,
+    fontWeight: 700
   }
 }))
 
 
-const Reviews: React.FC = () => {
-  let history = useHistory()
+const HightlightReview: React.FC = () => {
   const classes = useStyles()
-
-  const reviews: IPayload<IReview[]> = useSelector((state: IApplicationState) => state.restaurantDetail.reviews)
+  const reviewHighest: IReview = useSelector((state: IApplicationState) => state.restaurantDetail.reviewHighest)
+  const reviewLowest: IReview = useSelector((state: IApplicationState) => state.restaurantDetail.reviewLowest)
 
   return (
-    <Paper className={classes.container}>
-      {!isEmpty(reviews.rows) && reviews.rows.map((review, index) =>
-        <>
-          <ReviewsCard review={review}/>
-          {index < reviews.rows.length - 1 && <div className={classes.devider}></div>}
-        </>
-      )}
-    </Paper>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={6}>
+        <Paper className={classes.container}>
+          <span className={classes.title}>Highest Review</span>
+          {!isEmpty(reviewHighest) && <ReviewsCard review={reviewHighest}/>}
+        </Paper>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Paper className={classes.container}>
+          <span className={classes.title}>Lowest Review</span>
+          {!isEmpty(reviewLowest) && <ReviewsCard review={reviewLowest}/>}
+        </Paper>
+      </Grid>
+    </Grid>
 )
 }
 
-export default Reviews
+export default HightlightReview

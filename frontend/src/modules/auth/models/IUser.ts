@@ -1,7 +1,7 @@
 import { ERoles } from "./ERoles";
 
 export interface IUser {
-  id: number
+  id: string
   picture: string
   email: string
   name: string

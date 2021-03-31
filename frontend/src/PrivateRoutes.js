@@ -8,7 +8,7 @@ const PrivateRoutes = () => {
   return (
     <Switch>
       <Route path='/' exact component={Restaurants} />
-      <Route path='/:id' exact component={Restaurant} />
+      <Route path='/:id' component={Restaurant} />
     </Switch>
   )
 }

@@ -1,11 +1,29 @@
 import { success, notFound, authorOrAdmin } from '../../services/response/'
 import { Reviews } from '.'
+import { Restaurants} from './../restaurants'
+import { isEmpty } from 'lodash'
 
-export const create = ({ user, bodymen: { body } }, res, next) =>
-  Reviews.create({ ...body, user })
-    .then((reviews) => reviews.view(true))
-    .then(success(res, 201))
-    .catch(next)
+// done with async/await to show other ways of doing this
+export const create = async ({ user, bodymen: { body } }, res, next) => {
+  try {
+    const restaurant = await Restaurants.findOne({ _id: body.restaurant})
+    if(!isEmpty(Restaurants)) {
+      await Reviews.create({ ...body, user })
+      const indexRate = body.rate
+      const key = Object.keys(restaurant.rates)[indexRate]
+      restaurant.rates[key] = restaurant.rates[key] + 1
+      await restaurant.save()
+      return res.status(201).json({
+        success: true
+      })
+    } else {
+      return res.status(409)
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({error})
+  }
+}
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   Reviews.count(query)
@@ -61,15 +79,44 @@ export const show = ({ params }, res, next) =>
     .then(success(res))
     .catch(next)
 
-export const update = ({ user, bodymen: { body }, params }, res, next) =>
-  Reviews.findById(params.id)
-    .populate('user')
-    .then(notFound(res))
-    .then(authorOrAdmin(res, user, 'user'))
-    .then((reviews) => reviews ? Object.assign(reviews, body).save() : null)
-    .then((reviews) => reviews ? reviews.view(true) : null)
-    .then(success(res))
-    .catch(next)
+
+export const update = async ({ user, bodymen: { body }, params }, res, next) => {
+  try {
+    const restaurant = await Restaurants.findOne({ _id: body.restaurant})
+    if(!isEmpty(Restaurants)) {
+      const review = await Reviews.findById(params.id).populate('user')
+      const auth = await authorOrAdmin(res, user, 'user')(review)
+
+      if(!isEmpty(review) && review !== null) {
+        // remove star
+        const indexRateRemove = review.rate
+        const keyRemove = Object.keys(restaurant.rates)[indexRateRemove]
+        restaurant.rates[keyRemove] = restaurant.rates[keyRemove] > 0 ? restaurant.rates[keyRemove] - 1 : 0
+
+        // add start
+        const indexRate = body.rate
+        const key = Object.keys(restaurant.rates)[indexRate]
+        restaurant.rates[key] = restaurant.rates[key] + 1
+
+        const newReview = Object.assign(review, body)
+        await newReview.save()
+
+        await restaurant.save()
+        return res.status(201).json({
+          success: true
+        })
+      } else {
+        return res.status(409)
+      }
+    } else {
+      return res.status(409)
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({error})
+  }
+}
+
 
 export const destroy = ({ user, params }, res, next) =>
   Reviews.findById(params.id)

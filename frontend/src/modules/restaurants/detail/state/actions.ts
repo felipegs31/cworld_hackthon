@@ -1,11 +1,14 @@
-import { IReview } from './../models/IReviews';
+import { IUser } from './../../../auth/models/IUser';
+import { IReview, IReviewData } from './../models/IReviews';
 import { IPayload } from './../../../../utils/models/IPayload';
 import { IRestaurant } from './../models/IRestaurant';
 import { action } from 'typesafe-actions'
 import { ActionTypes } from './types'
 
-export const restaurantDetailRequest = (id: string) => {
-	return action(ActionTypes.RESTAURANT_DETAIL_REQUEST, id)
+
+// Restaurants
+export const restaurantDetailRequest = () => {
+	return action(ActionTypes.RESTAURANT_DETAIL_REQUEST)
 }
 
 export const restaurantDetailSuccess = (data: IRestaurant) =>
@@ -14,20 +17,19 @@ export const restaurantDetailSuccess = (data: IRestaurant) =>
 export const restaurantDetailError = (message: string) =>
 	action(ActionTypes.RESTAURANT_DETAIL_ERROR, message)
 
-
-export const reviewsRequest = (id: string) => {
-  return action(ActionTypes.REVIEWS_REQUEST, id)
+// Reviews fetch
+export const reviewsRequest = () => {
+  return action(ActionTypes.REVIEWS_REQUEST)
 }
 
-export const reviewsSuccess = (data: IPayload<IReview[]>) =>
-  action(ActionTypes.REVIEWS_SUCCESS, data)
+export const reviewsSuccess = (data: IPayload<IReview[]>, user: IUser) =>
+  action(ActionTypes.REVIEWS_SUCCESS, { data, user })
 
 export const reviewsError = (message: string) =>
   action(ActionTypes.REVIEWS_ERROR, message)
 
-
-export const reviewHighestRequest = (id: string) => {
-  return action(ActionTypes.REVIEW_HIGHEST_REQUEST, id)
+export const reviewHighestRequest = () => {
+  return action(ActionTypes.REVIEW_HIGHEST_REQUEST)
 }
 
 export const reviewHighestSuccess = (data: IReview) =>
@@ -36,9 +38,8 @@ export const reviewHighestSuccess = (data: IReview) =>
 export const reviewHighestError = (message: string) =>
   action(ActionTypes.REVIEW_HIGHEST_ERROR, message)
 
-
-export const reviewLowestRequest = (id: string) => {
-  return action(ActionTypes.REVIEW_LOWEST_REQUEST, id)
+export const reviewLowestRequest = () => {
+  return action(ActionTypes.REVIEW_LOWEST_REQUEST)
 }
 
 export const reviewLowestSuccess = (data: IReview) =>
@@ -46,3 +47,31 @@ export const reviewLowestSuccess = (data: IReview) =>
 
 export const reviewLowestError = (message: string) =>
   action(ActionTypes.REVIEW_LOWEST_ERROR, message)
+
+
+// Open modal Review
+export const openReviewModal = (review?: IReview) =>
+  action(ActionTypes.OPEN_REVIEW_MODAL, review)
+
+export const closeReviewModal = () =>
+  action(ActionTypes.CLOSE_REVIEW_MODAL)
+
+// Submit Review
+
+export const postReview = (review: IReviewData) =>
+  action(ActionTypes.POST_REVIEW, review)
+
+export const postReviewSuccess = () =>
+  action(ActionTypes.POST_REVIEW_SUCCESS)
+
+export const postReviewError = () =>
+  action(ActionTypes.POST_REVIEW_ERROR)
+
+export const putReview = (review: IReviewData) =>
+  action(ActionTypes.PUT_REVIEW, review)
+
+export const putReviewSuccess = () =>
+  action(ActionTypes.PUT_REVIEW_SUCCESS)
+
+export const putReviewError = () =>
+  action(ActionTypes.PUT_REVIEW_ERROR)

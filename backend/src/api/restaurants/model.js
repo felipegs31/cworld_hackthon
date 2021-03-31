@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import mongooseKeywords from "mongoose-keywords";
+import round from '../../services/utils/round';
 
 const restaurantsSchema = new Schema({
   name: {
@@ -50,6 +51,21 @@ const restaurantsSchema = new Schema({
 restaurantsSchema.plugin(mongooseKeywords, {
   paths: ["name", "category"]
 });
+
+restaurantsSchema.pre('save', function (next) {
+  if (!this.isModified('rates')) return next()
+  let sumOfElements = 0
+  let sumOfStars = 0
+  Object.keys(this.rates).map((key, index) => {
+    if (index > 0) {
+      sumOfElements += this.rates[key]
+      sumOfStars += this.rates[key] * index
+    }
+  });
+  const average = round(sumOfStars/sumOfElements, 2)
+  this.averageRate = average
+  next()
+})
 
 restaurantsSchema.methods = {
   view (full) {
