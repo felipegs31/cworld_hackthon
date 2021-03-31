@@ -13,6 +13,7 @@ import PeopleIcon from '@material-ui/icons/People'
 import { useSelector, useDispatch } from 'react-redux'
 import { IApplicationState } from '../../../../store/roots/rootReducer'
 import * as actions from './../../state/actions'
+import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -32,7 +33,11 @@ const useStyles = makeStyles((theme: Theme) =>
       // necessary for content to be below app bar
       ...theme.mixins.toolbar,
       justifyContent: 'flex-end',
-    }
+    },
+    navlink: {
+      color: '#333',
+      textDecoration: 'none',
+    },
   })
 );
 
@@ -63,14 +68,18 @@ export default function Navigation() {
       </div>
       <Divider />
       <List>
-        <ListItem button>
-          <ListItemIcon><RestaurantIcon /></ListItemIcon>
-          <ListItemText primary="Restaurants" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon><PeopleIcon /></ListItemIcon>
-          <ListItemText primary="Users" />
-        </ListItem>
+        <NavLink className={classes.navlink} to={"/"}>
+          <ListItem button>
+            <ListItemIcon><RestaurantIcon /></ListItemIcon>
+            <ListItemText primary="Restaurants" />
+          </ListItem>
+        </NavLink>
+        <NavLink className={classes.navlink} to={"/users"}>
+          <ListItem button>
+            <ListItemIcon><PeopleIcon /></ListItemIcon>
+            <ListItemText primary="Users" />
+          </ListItem>
+        </NavLink>
       </List>
       <Divider />
     </Drawer>

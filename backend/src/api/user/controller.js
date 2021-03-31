@@ -6,7 +6,7 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.count(query)
     .then(count => User.find(query, select, cursor)
       .then(users => ({
-        rows: users.map((user) => user.view()),
+        rows: users.map((user) => user.view(true)),
         count
       }))
     )
@@ -16,7 +16,7 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
 export const show = ({ params }, res, next) =>
   User.findById(params.id)
     .then(notFound(res))
-    .then((user) => user ? user.view() : null)
+    .then((user) => user ? user.view(true) : null)
     .then(success(res))
     .catch(next)
 
