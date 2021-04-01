@@ -85,12 +85,8 @@ const RestaurantModal: React.FC = () => {
     };
 
     if (isNewData) {
-      console.log('POST')
-      console.log('body', body)
       dispatch(actions.postRestaurant(body))
     } else {
-      console.log('UPDATE')
-      console.log('body', body)
       dispatch(actions.putRestaurant(body))
     }
 

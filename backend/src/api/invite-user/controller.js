@@ -7,16 +7,12 @@ import { sign } from '../../services/jwt'
 export const create = async ({ bodymen: { body: { email, name, role } } }, res, next) => {
   try {
     const hasUser = await User.findOne({ email })
-    console.log('email', email)
-
-    console.log('hasUser', hasUser)
     if (hasUser) {
       return res.status(409).json({
         message: 'User already registered'
       })
     }
     const invite = await InviteUser.create({ email, name, role })
-    console.log('invite', invite)
     const link = `${process.env.API_URL}/inviteuser/${invite.token}`
     const content = `
       Hey, ${name}.<br><br>

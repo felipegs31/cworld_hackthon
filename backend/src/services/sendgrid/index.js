@@ -15,8 +15,5 @@ export const sendMail = ({
     subject,
     html: content
   }
-  console.log('msg', msg)
-  console.log('sendgridKey', sendgridKey)
-
   return sendgridMail.send(msg)
 }

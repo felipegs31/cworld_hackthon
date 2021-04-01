@@ -24,7 +24,6 @@ export function* handleUsersListRequest({ type }: {
     const searchText: string | any = yield select((state: IApplicationState) => state.usersList.searchText);
 
     const query = createQueryParams(page, limit, sort, asc, searchText)
-    console.log('query', query)
     const res: any = yield API.get(`users${query}`)
     const data: IPayload<IUser[]> = res.data
 		yield put(usersListSuccess(data))

@@ -20,7 +20,6 @@ export const create = async ({ user, bodymen: { body } }, res, next) => {
       return res.status(409)
     }
   } catch (error) {
-    console.log(error)
     return res.status(500).json({error})
   }
 }
@@ -49,8 +48,7 @@ export const index_restaurant = ({ querymen: { query, select, cursor }, params }
     .then(success(res))
     .catch(next)
 
-export const restaurant_highest = ({ params }, res, next) => {
-  console.log('restaurant_highest')
+export const restaurant_highest = ({ params }, res, next) =>
   Reviews.findOne(Object.assign({restaurant: params.id}))
     .sort({rate: -1, createdAt: -1})
     .populate('user')
@@ -58,10 +56,9 @@ export const restaurant_highest = ({ params }, res, next) => {
     .then((reviews) => reviews ? reviews.view() : null)
     .then(success(res))
     .catch(next)
-}
 
-export const restaurant_lowest = ({ params }, res, next) => {
-  console.log('restaurant_lowest')
+
+export const restaurant_lowest = ({ params }, res, next) =>
   Reviews.findOne(Object.assign({restaurant: params.id}))
     .sort({"rate": 1, "createdAt": -1})
     .populate('user')
@@ -69,7 +66,7 @@ export const restaurant_lowest = ({ params }, res, next) => {
     .then((reviews) => reviews ? reviews.view() : null)
     .then(success(res))
     .catch(next)
-}
+
 
 export const show = ({ params }, res, next) =>
   Reviews.findById(params.id)

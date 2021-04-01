@@ -94,7 +94,6 @@ const Users: React.FC = () => {
   }
 
   const handleChangePageUser = (e: any, page: number) => {
-    console.log('page', page)
     dispatch(actions.usersListChangePage(page + 1))
   }
 
