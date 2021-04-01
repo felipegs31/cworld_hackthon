@@ -23,7 +23,8 @@
     "react-scripts": "2.1.8",
     "redux": "^4.0.4",
     "redux-saga": "^1.0.2",
-    "typesafe-actions": "^3.2.1"
+    "typesafe-actions": "^3.2.1",
+    "use-debounce": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

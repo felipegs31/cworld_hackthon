@@ -8,9 +8,11 @@ import {
   Grid,
   AppBar,
   Container,
+  Typography,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { NavLink } from 'react-router-dom';
 
 import * as actions from './../state/actions';
 import SpinnerOverlay from '../../../design-system/SpinnerOverlay/SpinnerOverlay';
@@ -46,6 +48,13 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#fff',
     opacity: '0.5',
     zIndex: 2
+  },
+  navlink: {
+    color: '#333',
+    textDecoration: 'none'
+  },
+  appbar: {
+    height: 64
   }
 }));
 
@@ -56,6 +65,7 @@ const Login: React.FC = () => {
   const [showError, setShowError] = useState<boolean>(false)
   const [form, setForm] = useState({ email: '', password: '' })
   const loading: boolean = useSelector((state: IApplicationState) => state.auth.loading)
+  const loginError: boolean = useSelector((state: IApplicationState) => state.auth.loginError)
 
   const changeValue = (event: any) => {
     const { name, value } = event.target;
@@ -77,11 +87,13 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <AppBar />
+      <AppBar className={classes.appbar}/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          {/* <LogoText /> */}
+          <Typography variant="h2" gutterBottom>
+            Food Corner
+          </Typography>
           <form className={classes.form} noValidate>
             {loading && <div className={classes.overlay}></div>}
             {loading && <SpinnerOverlay />}
@@ -121,7 +133,7 @@ const Login: React.FC = () => {
                 }
               }}
             />
-            {showError && <div style={{ color: 'red' }}>Usuário ou senha incorretos</div>}
+            {loginError && <div style={{ color: 'red' }}>Invalid email or password</div>}
             <Button
               fullWidth
               variant="contained"
@@ -134,11 +146,14 @@ const Login: React.FC = () => {
                 </Button>
             <Grid container>
               <Grid item xs>
-                {/* <NavLinkStyled variant="body2" to='/forgotpassword'>
-                  Esqueceu a senha?
-                </NavLinkStyled> */}
+                <NavLink className={classes.navlink} to='/resetpassword'>
+                  Forgot your password?
+                </NavLink>
               </Grid>
               <Grid item>
+                <NavLink className={classes.navlink} to='/createaccount'>
+                  Create new account
+                </NavLink>
               </Grid>
             </Grid>
           </form>

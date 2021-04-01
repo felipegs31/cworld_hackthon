@@ -117,12 +117,8 @@ const ReviewModal: React.FC = () => {
     };
 
     if (isNewData) {
-      console.log('POST')
-      console.log('body', body)
       dispatch(actions.postReview(body))
     } else {
-      console.log('UPDATE')
-      console.log('body', body)
       dispatch(actions.putReview(body))
     }
 
@@ -137,7 +133,7 @@ const ReviewModal: React.FC = () => {
     <form className={classes.modalContainer} onSubmit={handleSubmit}>
       <div className={classes.modalHeader}>
         <Typography variant='h6'>{isNewData ? 'New Review' : 'Edit Review'}</Typography>
-        <IconButton disabled={reviewModalLoading} onClick={() => handleDeleteReview()}><DeleteIcon /></IconButton>
+        {!isNewData && <IconButton disabled={reviewModalLoading} onClick={() => handleDeleteReview()}><DeleteIcon /></IconButton>}
       </div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker

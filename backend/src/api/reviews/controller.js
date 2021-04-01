@@ -85,7 +85,12 @@ export const update = async ({ user, bodymen: { body }, params }, res, next) => 
     const restaurant = await Restaurants.findOne({ _id: body.restaurant})
     if(!isEmpty(restaurant)) {
       const review = await Reviews.findById(params.id).populate('user')
-      const auth = await authorOrAdmin(res, user, 'user')(review)
+      const isAuthorOrAdmin = authorOrAdmin(review, user, 'user')
+      if (!isAuthorOrAdmin) {
+        return res.status(401).json({
+          message: 'You are not the author'
+        })
+      }
 
       if(!isEmpty(review) && review !== null) {
         // remove star
@@ -120,7 +125,12 @@ export const update = async ({ user, bodymen: { body }, params }, res, next) => 
 export const destroy = async({ user, params }, res, next) => {
   try {
     const review = await Reviews.findById(params.id).populate('user')
-    const auth = await authorOrAdmin(res, user, 'user')()
+    const isAuthorOrAdmin = authorOrAdmin(review, user, 'user')
+    if (!isAuthorOrAdmin) {
+      return res.status(401).json({
+        message: 'You are not the author'
+      })
+    }
     if(!isEmpty(review)) {
       const restaurant = await Restaurants.findOne({ _id: review.restaurant})
 

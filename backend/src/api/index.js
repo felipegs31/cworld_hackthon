@@ -4,6 +4,7 @@ import auth from './auth'
 import passwordReset from './password-reset'
 import restaurants from './restaurants'
 import reviews from './reviews'
+import inviteUser from './invite-user'
 
 const router = new Router()
 
@@ -32,8 +33,10 @@ const router = new Router()
  */
 router.use('/users', user)
 router.use('/auth', auth)
-router.use('/password-resets', passwordReset)
+router.use('/passwordresets', passwordReset)
 router.use('/restaurants', restaurants)
 router.use('/reviews', reviews)
+router.use('/inviteuser', inviteUser)
+
 
 export default router

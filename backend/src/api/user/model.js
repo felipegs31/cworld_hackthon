@@ -33,6 +33,10 @@ const userSchema = new Schema({
   picture: {
     type: String,
     trim: true
+  },
+  deleted: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

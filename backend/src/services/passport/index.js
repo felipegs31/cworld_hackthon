@@ -41,7 +41,7 @@ passport.use('password', new BasicStrategy((email, password, done) => {
     if (err) done(err)
   })
 
-  User.findOne({ email }).then((user) => {
+  User.findOne({ email, deleted: false }).then((user) => {
     if (!user) {
       done(true)
       return null

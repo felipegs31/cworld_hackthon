@@ -1,6 +1,9 @@
 import { ActionTypes } from './types'
 import { all, fork, takeLatest } from 'redux-saga/effects'
-import { handleUsersListRequest } from './effects'
+import { handleDeleteUser,
+         handlePostInviteUser,
+         handlePutUser,
+         handleUsersListRequest } from './effects'
 
 
 /**
@@ -10,7 +13,16 @@ function* watchUsersList(): Generator {
   yield takeLatest([ActionTypes.USERS_LIST_REQUEST,
                     ActionTypes.USERS_LIST_CHANGE_LIMIT,
                     ActionTypes.USERS_LIST_CHANGE_PAGE,
-                    ActionTypes.USERS_LIST_CHANGE_SORT], handleUsersListRequest)
+                    ActionTypes.USERS_LIST_CHANGE_SORT,
+                    ActionTypes.PUT_USER_SUCCESS,
+                    ActionTypes.DELETE_USER_SUCCESS,
+                    ActionTypes.USERS_LIST_CHANGE_SEARCH_TEXT], handleUsersListRequest)
+
+
+  yield takeLatest(ActionTypes.POST_INVITE_USER, handlePostInviteUser)
+  yield takeLatest(ActionTypes.PUT_USER, handlePutUser)
+  yield takeLatest(ActionTypes.DELETE_USER, handleDeleteUser)
+
 }
 
 

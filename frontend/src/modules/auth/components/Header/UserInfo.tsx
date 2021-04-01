@@ -86,7 +86,7 @@ const UserInfo: React.FC = () => {
         </Grid>
         <Grid item style={{ minWidth: '200px', maxWidth: '300px' }}>
           <Typography>{user.name}</Typography>
-          <Typography style={{ color: 'grey' }}>Admin</Typography>
+          <Typography style={{ color: 'grey' }}>{user.role}</Typography>
         </Grid>
       </Grid>
       <Divider />

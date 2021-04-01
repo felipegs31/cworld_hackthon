@@ -13,14 +13,26 @@ export const notFound = (res) => (entity) => {
   return null
 }
 
-export const authorOrAdmin = (res, user, userField) => (entity) => {
+// export const authorOrAdmin = (res, user, userField) => (entity) => {
+//   if (entity) {
+//     const isAdmin = user.role === 'admin'
+//     const isAuthor = entity[userField] && entity[userField].equals(user.id)
+//     if (isAuthor || isAdmin) {
+//       return entity
+//     }
+//     res.status(401).end()
+//   }
+//   return null
+// }
+
+export const authorOrAdmin = (entity, user, userField) => {
   if (entity) {
     const isAdmin = user.role === 'admin'
     const isAuthor = entity[userField] && entity[userField].equals(user.id)
     if (isAuthor || isAdmin) {
-      return entity
+      return true
     }
-    res.status(401).end()
+    return false
   }
-  return null
+  return false
 }

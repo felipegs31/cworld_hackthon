@@ -3,7 +3,14 @@ import { IPayload } from './../../../../utils/models/IPayload';
 import { put, select } from 'redux-saga/effects'
 import API from './../../../../services/api'
 import createQueryParams from '../../../../utils/createQueryParams';
-import { usersListSuccess, usersListError } from './actions'
+import { usersListSuccess,
+         usersListError,
+         postInviteUserSuccess,
+         postInviteUserError,
+         putUserSuccess,
+         putUserError,
+         deleteUserSuccess,
+         deleteUserError } from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 
 export function* handleUsersListRequest({ type }: {
@@ -28,5 +35,46 @@ export function* handleUsersListRequest({ type }: {
 		} else {
 			yield put(usersListError('An unknown error occured.'))
 		}
+	}
+}
+
+
+export function* handlePostInviteUser({ type, payload }: {
+  type: string,
+  payload: IUser
+}): Generator{
+	try {
+
+    yield API.post(`inviteuser`, payload)
+		yield put(postInviteUserSuccess())
+	} catch (err) {
+		yield put(postInviteUserError())
+	}
+}
+
+export function* handlePutUser({ type, payload }: {
+  type: string,
+  payload: IUser
+}): Generator{
+	try {
+    const user: IUser | any = yield select((state: IApplicationState) => state.usersList.userToEdit);
+
+    yield API.put(`users/${user.id}`, payload)
+		yield put(putUserSuccess())
+	} catch (err) {
+		yield put(putUserError())
+	}
+}
+
+export function* handleDeleteUser({ type }: {
+  type: string
+}): Generator{
+	try {
+    const user: IUser | any = yield select((state: IApplicationState) => state.usersList.userToEdit);
+
+    yield API.put(`users/${user.id}/delete`)
+		yield put(deleteUserSuccess())
+	} catch (err) {
+		yield put(deleteUserError())
 	}
 }

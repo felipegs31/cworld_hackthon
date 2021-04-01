@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   InputBase,
@@ -7,19 +7,27 @@ import {
 
 import AddCircleOutline from '@material-ui/icons/AddCircleOutlineOutlined';
 import SearchIcon from '@material-ui/icons/Search';
+import { useDebounce } from 'use-debounce/lib';
 
 
 interface props {
   title: string
   placeholder: string
   value: string
-  onChange?: (() => void)
+  onChange: ((event: any) => void)
   addRow?: (() => void)
   addRowLabel?: string
 }
 
 
 const TableTitle: React.FC<props> = (props) => {
+  const [text, setText] = useState(props.value);
+  const [value] = useDebounce(text, 500);
+
+  useEffect(() => {
+    props.onChange(text)
+  }, [value])
+
   return (
     <div style={styles.container}>
       <div style={styles.titleRow}>
@@ -44,8 +52,10 @@ const TableTitle: React.FC<props> = (props) => {
           <InputBase
             style={styles.search}
             placeholder={props.placeholder}
-            value={props.value ? props.value : ''}
-            onChange={props.onChange}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
           />
         </div>
       </div>}

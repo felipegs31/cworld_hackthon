@@ -6,3 +6,8 @@ export interface IRestaurant {
   id: string
 }
 
+export interface IRestaurantData {
+  name: string
+  category: string
+  photoUrl: string
+}

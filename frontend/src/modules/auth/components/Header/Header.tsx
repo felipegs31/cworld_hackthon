@@ -44,7 +44,6 @@ const Header: React.FC = () => {
   const dispatch = useDispatch()
   const classes = useStyles();
   const drawerOpen: boolean = useSelector((state: IApplicationState) => state.auth.drawerOpen)
-  const user: IUser = useSelector((state: IApplicationState) => state.auth.user)
 
   const handleToggleDrawer = () => {
     dispatch(actions.toggleDrawer())
@@ -58,17 +57,15 @@ const Header: React.FC = () => {
       })}
     >
       <Toolbar>
-        {user.role === ERoles.Admin &&
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleToggleDrawer}
-            edge="start"
-            className={clsx(classes.menuButton, drawerOpen && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-        }
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleToggleDrawer}
+          edge="start"
+          className={clsx(classes.menuButton, drawerOpen && classes.hide)}
+        >
+          <MenuIcon />
+        </IconButton>
         <Typography variant="h6" noWrap>
           Food Corner
         </Typography>

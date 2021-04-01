@@ -82,7 +82,7 @@ const Ratings: React.FC = () => {
       <Grid container spacing={3}>
         {!isEmpty(restaurant) && <>
           <Grid item xs={12} sm={4} md={3} className={classes.root}>
-            <div className={classes.averageRate}>{restaurant.averageRate}</div>
+            <div className={classes.averageRate}>{restaurant.averageRate.toFixed(2)}</div>
             <Rating className={classes.rating} value={restaurant.averageRate} readOnly precision={0.25}/>
           </Grid>
           <Grid item xs={12} sm={8} md={9} className={classes.root}>

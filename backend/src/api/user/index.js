@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy } from './controller'
+import { index, showMe, show, create, update, updatePassword, destroy, soft_delete } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
@@ -46,6 +46,7 @@ router.get('/me',
  * @apiError 404 User not found.
  */
 router.get('/:id',
+  token({ required: true, roles: ['admin'] }),
   show)
 
 /**
@@ -65,8 +66,7 @@ router.get('/:id',
  * @apiError 409 Email already registered.
  */
 router.post('/',
-  master(),
-  body({ email, password, name, picture, role }),
+  body({ email, password, name}),
   create)
 
 /**
@@ -83,8 +83,8 @@ router.post('/',
  * @apiError 404 User not found.
  */
 router.put('/:id',
-  token({ required: true }),
-  body({ name, picture }),
+  token({ required: true, roles: ['admin'] }),
+  body({ name, role }),
   update)
 
 /**
@@ -116,5 +116,20 @@ router.put('/:id/password',
 router.delete('/:id',
   token({ required: true, roles: ['admin'] }),
   destroy)
+
+/**
+ * @api {put} /users/:id/delete SoftDelete user
+ * @apiName SoftDelete
+ * @apiGroup User
+ * @apiPermission user
+ * @apiParam {String} access_token User access_token.
+ * @apiSuccess {Object} user User's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Current user or admin access only.
+ * @apiError 404 User not found.
+ */
+ router.put('/:id/delete',
+  token({ required: true, roles: ['admin'] }),
+  soft_delete)
 
 export default router

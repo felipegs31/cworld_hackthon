@@ -48,7 +48,7 @@ const Main: React.FC = () => {
     <div className={classes.root}>
       <CssBaseline />
       <Header />
-      {user.role === ERoles.Admin && <Navigation /> }
+      <Navigation />
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: drawerOpen,

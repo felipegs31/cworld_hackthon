@@ -1,18 +1,21 @@
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Avatar,
-  Card,
-  CardContent,
   Typography,
-  CardHeader,
-  Paper
+  Paper,
+  IconButton,
 } from '@material-ui/core/'
 import Rating from '@material-ui/lab/Rating';
 import { useHistory } from "react-router-dom";
-import { IRestaurant } from '../models/IRestaurant';
+import { IRestaurant } from '../../models/IRestaurant';
+import EditIcon from '@material-ui/icons/Edit';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from './../../state/actions';
+import { ERoles } from '../../../../auth/models/ERoles';
+import { IUser } from '../../../../auth/models/IUser';
+import { IApplicationState } from '../../../../../store/roots/rootReducer';
 
 const useStyles = makeStyles(theme => ({
   paperContainer: {
@@ -56,6 +59,11 @@ const useStyles = makeStyles(theme => ({
     fontSize: 20,
     color: 'grey',
     marginBottom: 10
+  },
+  editButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0
   }
 }))
 
@@ -65,10 +73,19 @@ interface props {
 
 const RestaurantCard: React.FC<props> = ({ restaurant }: props) => {
   const classes = useStyles()
-  let history = useHistory();
+  const dispatch = useDispatch()
+  let history = useHistory()
+
+  const user: IUser = useSelector((state: IApplicationState) => state.auth.user)
 
   const hadleGoToDetails = () => {
-    history.push(`${restaurant.id}`);
+    history.push(`${restaurant.id}`)
+  }
+
+  const handleOpenRestaurantModal = (e:any, restaurant: IRestaurant) => {
+    e.nativeEvent.stopImmediatePropagation();
+    e.stopPropagation();
+    dispatch(actions.openRestaurantModal(restaurant))
   }
 
   return (
@@ -76,6 +93,7 @@ const RestaurantCard: React.FC<props> = ({ restaurant }: props) => {
       <Paper className={classes.paperContainer} onClick={() => hadleGoToDetails()}>
         <div className={classes.container}>
           <div className={classes.topBackground} />
+          { user.role === ERoles.Admin && <IconButton className={classes.editButton} onClick={(e) => handleOpenRestaurantModal(e, restaurant)}><EditIcon /></IconButton>}
           <div className={classes.photoContainer}>
             <Avatar src={restaurant.photoUrl} className={classes.avatar} />
           </div>

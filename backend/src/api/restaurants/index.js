@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
-import { create, index, show, update, destroy } from './controller'
+import { create, index, show, update, destroy, soft_delete } from './controller'
 import { schema } from './model'
 export Restaurants, { schema } from './model'
 
@@ -92,5 +92,21 @@ router.put('/:id',
 router.delete('/:id',
   token({ required: true, roles: ['admin'] }),
   destroy)
+
+
+/**
+ * @api {put} /restaurants/:id/delete SoftDelete restaurant
+ * @apiName SoftDelete
+ * @apiGroup Restaurant
+ * @apiPermission restaurant
+ * @apiParam {String} access_token Restaurant access_token.
+ * @apiSuccess {Object} restaurant Restaurant's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Current restaurant or admin access only.
+ * @apiError 404 Restaurant not found.
+ */
+router.put('/:id/delete',
+  token({ required: true, roles: ['admin'] }),
+  soft_delete)
 
 export default router

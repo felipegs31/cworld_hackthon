@@ -62,7 +62,7 @@ const ReviewsCard: React.FC<props> = ({ review, canEdit }: props) => {
     <div className={classes.container}>
       <div>
         <Avatar src={review.user.picture} className={classes.avatar} />
-        <IconButton onClick={() => handleOpenReviewModal(review)}><EditIcon /></IconButton>
+        {review.editable && <IconButton onClick={() => handleOpenReviewModal(review)}><EditIcon /></IconButton>}
       </div>
       <div className={classes.bodyContainer}>
         <div className={classes.name}>{review.user.name}</div>

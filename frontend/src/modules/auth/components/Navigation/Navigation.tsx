@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { IApplicationState } from '../../../../store/roots/rootReducer'
 import * as actions from './../../state/actions'
 import { NavLink } from 'react-router-dom';
+import { ERoles } from '../../models/ERoles'
+import { IUser } from '../../models/IUser'
 
 const drawerWidth = 240;
 
@@ -45,6 +47,7 @@ export default function Navigation() {
   const classes = useStyles();
   const dispatch = useDispatch()
   const drawerOpen: boolean = useSelector((state: IApplicationState) => state.auth.drawerOpen)
+  const user: IUser = useSelector((state: IApplicationState) => state.auth.user)
 
 
   const handleToggleDrawer = () => {
@@ -74,12 +77,12 @@ export default function Navigation() {
             <ListItemText primary="Restaurants" />
           </ListItem>
         </NavLink>
-        <NavLink className={classes.navlink} to={"/users"}>
+        {user.role === ERoles.Admin && <NavLink className={classes.navlink} to={"/users"}>
           <ListItem button>
             <ListItemIcon><PeopleIcon /></ListItemIcon>
             <ListItemText primary="Users" />
           </ListItem>
-        </NavLink>
+        </NavLink> }
       </List>
       <Divider />
     </Drawer>

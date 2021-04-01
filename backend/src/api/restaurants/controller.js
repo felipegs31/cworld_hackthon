@@ -8,8 +8,8 @@ export const create = ({ bodymen: { body } }, res, next) =>
     .catch(next)
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  Restaurants.count(query)
-    .then(count => Restaurants.find(query, select, cursor)
+  Restaurants.count(Object.assign(query, {deleted: false}))
+    .then(count => Restaurants.find(Object.assign(query, {deleted: false}), select, cursor)
       .then((restaurants) => ({
         count,
         rows: restaurants.map((restaurants) => restaurants.view())
@@ -38,4 +38,12 @@ export const destroy = ({ params }, res, next) =>
     .then(notFound(res))
     .then((restaurants) => restaurants ? restaurants.remove() : null)
     .then(success(res, 204))
+    .catch(next)
+
+export const soft_delete = ({ params }, res, next) =>
+  Restaurants.findById(params.id)
+    .then(notFound(res))
+    .then((restaurants) => restaurants ? Object.assign(restaurants, {deleted: true}).save() : null)
+    .then((restaurants) => restaurants ? restaurants.view(true) : null)
+    .then(success(res))
     .catch(next)

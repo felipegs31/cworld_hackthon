@@ -3,8 +3,8 @@ import { User } from '.'
 import { sign } from '../../services/jwt'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  User.count(query)
-    .then(count => User.find(query, select, cursor)
+  User.count(Object.assign(query, {deleted: false}))
+    .then(count => User.find(Object.assign(query, {deleted: false}), select, cursor)
       .then(users => ({
         rows: users.map((user) => user.view(true)),
         count
@@ -90,4 +90,12 @@ export const destroy = ({ params }, res, next) =>
     .then(notFound(res))
     .then((user) => user ? user.remove() : null)
     .then(success(res, 204))
+    .catch(next)
+
+export const soft_delete = ({ params }, res, next) =>
+  User.findById(params.id)
+    .then(notFound(res))
+    .then((user) => user ? Object.assign(user, {deleted: true}).save() : null)
+    .then((user) => user ? user.view(true) : null)
+    .then(success(res))
     .catch(next)
