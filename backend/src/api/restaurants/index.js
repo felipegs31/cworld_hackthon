@@ -95,9 +95,9 @@ router.delete('/:id',
 
 
 /**
- * @api {put} /restaurants/:id/delete SoftDelete restaurant
+ * @api {put} /restaurants/:id/delete SoftDelete restaurants
  * @apiName SoftDelete
- * @apiGroup Restaurant
+ * @apiGroup Restaurants
  * @apiPermission restaurant
  * @apiParam {String} access_token Restaurant access_token.
  * @apiSuccess {Object} restaurant Restaurant's data.
