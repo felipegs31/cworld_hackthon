@@ -4,9 +4,6 @@ import {
   InputBase,
   Button
 } from '@material-ui/core/'
-import { useHistory } from "react-router-dom";
-import { IRestaurant } from '../../models/IRestaurant';
-import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../state/actions';
 import { ERoles } from '../../../../auth/models/ERoles';

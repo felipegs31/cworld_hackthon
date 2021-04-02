@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { IApplicationState } from '../../../../../store/roots/rootReducer';
 import {
-  Typography,
-  IconButton,
-  Avatar,
   Paper,
   Button,
-  LinearProgress,
-  Grid,
-  Icon
 } from '@material-ui/core/'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
-import Rating from '@material-ui/lab/Rating';
-import { IRestaurant } from '../../models/IRestaurant';
 import { isEmpty } from 'lodash'
-import { IRatesPercent } from '../../models/IRatesPercent';
 import { IReview } from '../../models/IReviews';
 import { IPayload } from '../../../../../utils/models/IPayload';
 import ReviewsCard from './../ReviewsCard/ReviewsCard';

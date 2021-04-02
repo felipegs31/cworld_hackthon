@@ -5,11 +5,10 @@ import * as actions from './../../state/actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import {
-	CssBaseline, AppBar, Toolbar, Button, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Typography,
+	Button,List, ListItem, ListItemIcon, ListItemText, Divider, Typography,
   Menu, Grid, Avatar,
 } from '@material-ui/core';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import FaceIcon from '@material-ui/icons/Face';
 import { NavLink } from 'react-router-dom';
 
 
@@ -50,6 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const UserInfo: React.FC = () => {
+  const dispatch = useDispatch()
   const classes = useStyles();
   const user: IUser = useSelector((state: IApplicationState) => state.auth.user)
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,6 +60,10 @@ const UserInfo: React.FC = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  }
+
+  const handleLogout = () => {
+    dispatch(actions.logout())
   }
 
   return (
@@ -91,15 +95,15 @@ const UserInfo: React.FC = () => {
       </Grid>
       <Divider />
       <List>
-        <NavLink className={classes.navLink} to={"/minha-conta"} onClick={handleClose}>
+        {/* <NavLink className={classes.navLink} to={"/myaccount"} onClick={handleClose}>
           <ListItem
             button>
             <ListItemIcon><FaceIcon /></ListItemIcon>
             <ListItemText
               primary={'My Account'} />
           </ListItem>
-        </NavLink>
-        <NavLink className={classes.navLink} to={"/login"} onClick={handleClose}>
+        </NavLink> */}
+        <NavLink className={classes.navLink} to={"/login"} onClick={handleLogout}>
           <ListItem button>
             <ListItemIcon><ExitToApp /></ListItemIcon>
             <ListItemText primary={'Logout'} />

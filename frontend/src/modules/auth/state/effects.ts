@@ -19,8 +19,9 @@ import { getMeSuccess,
          getInviteUserError,
          createAccountInviteUserSuccess,
          createAccountInviteUserError } from './actions'
-import history from '../../../History';
 import History from '../../../History';
+import { toastr } from 'react-redux-toastr'
+import errorToast from '../../../utils/models/errorToast';
 
 export function* handleLogin({type, payload}: {
   type: string,
@@ -34,7 +35,7 @@ export function* handleLogin({type, payload}: {
     const data: ILogin = res.data
 		yield put(loginSuccess(data))
     yield setAuthToken(data.token)
-    yield call(history.push, '/')
+    yield call(History.push, '/')
 
 
 	} catch (err) {
@@ -53,17 +54,17 @@ export function* handleGetMe(): Generator {
     const res: any = yield API.get('users/me')
     const data: IUser = res.data
     yield put(getMeSuccess(data))
-    yield call(history.push, '/')
+    yield call(History.push, '/')
 
   } catch (err) {
     localStorage.removeItem('token');
-    yield call(history.push, '/login')
+    yield call(History.push, '/login')
   }
 }
 
 export function* handleLogout(): Generator {
   localStorage.removeItem('token');
-  yield call(history.push, '/login')
+  yield call(History.push, '/login')
 }
 
 export function* handleResetPassword({type, payload}: {
@@ -73,8 +74,10 @@ export function* handleResetPassword({type, payload}: {
   try {
     const res: any = yield API.post('passwordresets', {email: payload})
     yield put(postResetPasswordSuccess())
+    toastr.success('Email Sent', 'Email to reset password was sent')
   } catch (err) {
     yield put(postResetPasswordError())
+    errorToast(err)
   }
 
 }
@@ -101,8 +104,10 @@ export function* handlePutResetPassword({type, payload}: {
     pathname = pathname.replace("/resetpassword", "");
     const res: any = yield API.put(`passwordresets${pathname}`, {password: payload})
     yield put(putResetPasswordSuccess())
+    toastr.success('Password Changed', '')
   } catch (err) {
     yield put(putResetPasswordError())
+    errorToast(err)
   }
 
 }
@@ -115,10 +120,11 @@ export function* handleCreateAccount({type, payload}: {
     const res: any = yield API.post(`users`, payload)
     const data: ILogin = res.data
     yield put(createAccountSuccess())
-    yield setAuthToken(data.token)
-    yield call(history.push, '/')
+    yield call(History.push, '/login')
+    toastr.success('Account Created', '')
   } catch (err) {
     yield put(createAccountError())
+    errorToast(err)
   }
 
 }
@@ -147,10 +153,11 @@ export function* handleCreateAccountInviteUser({type, payload}: {
     const res: any = yield API.put(`inviteuser${pathname}`, {password: payload})
     const data: ILogin = res.data
     yield put(createAccountInviteUserSuccess())
-    yield setAuthToken(data.token)
-    yield call(history.push, '/')
+    yield call(History.push, '/login')
+    toastr.success('Account Created!', '')
   } catch (err) {
     yield put(createAccountInviteUserError())
+    errorToast(err)
   }
 
 }

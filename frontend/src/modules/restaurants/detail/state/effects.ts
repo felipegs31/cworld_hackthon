@@ -3,7 +3,6 @@ import { IReview } from './../models/IReviews';
 import { IPayload } from './../../../../utils/models/IPayload';
 import { put, select } from 'redux-saga/effects'
 import API from './../../../../services/api'
-import createQueryParams from '../../../../utils/createQueryParams';
 import { restaurantDetailSuccess,
         restaurantDetailError,
         reviewsSuccess,
@@ -21,6 +20,8 @@ import { restaurantDetailSuccess,
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import { IRestaurant } from '../models/IRestaurant';
 import History from '../../../../History';
+import { toastr } from 'react-redux-toastr'
+import errorToast from '../../../../utils/models/errorToast';
 
 export function* handleRestaurantDetailRequest({ type }: {
   type: string,
@@ -112,8 +113,10 @@ export function* handlePostReview({ type, payload }: {
     }
     yield API.post(`reviews`, body)
 		yield put(postReviewSuccess())
+    toastr.success('Review added', '')
 	} catch (err) {
 		yield put(postReviewError())
+    errorToast(err)
 	}
 }
 
@@ -131,8 +134,10 @@ export function* handlePutReview({ type, payload }: {
     }
     yield API.put(`reviews/${review.id}`, body)
 		yield put(putReviewSuccess())
+    toastr.success('Review updated', '')
 	} catch (err) {
 		yield put(putReviewError())
+    errorToast(err)
 	}
 }
 
@@ -144,8 +149,10 @@ export function* handleDeleteReview({ type }: {
 
     yield API.delete(`reviews/${review.id}`)
 		yield put(deleteReviewSuccess())
+    toastr.success('Review updated', '')
 	} catch (err) {
 		yield put(deleteReviewError())
+    errorToast(err)
 	}
 }
 

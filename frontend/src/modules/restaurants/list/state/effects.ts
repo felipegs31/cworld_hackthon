@@ -12,6 +12,8 @@ import { restaurantsListSuccess,
          deleteRestaurantError } from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import { IRestaurant } from '../models/IRestaurant';
+import { toastr } from 'react-redux-toastr'
+import errorToast from '../../../../utils/models/errorToast';
 
 export function* handleRestaurantsListRequest({ type }: {
   type: string
@@ -46,8 +48,11 @@ export function* handlePostRestaurant({ type, payload }: {
 
     yield API.post(`restaurants`, payload)
 		yield put(postRestaurantSuccess())
+    toastr.success('Restaurant Added', '')
 	} catch (err) {
 		yield put(postRestaurantError())
+    errorToast(err)
+
 	}
 }
 
@@ -60,8 +65,12 @@ export function* handlePutRestaurant({ type, payload }: {
 
     yield API.put(`restaurants/${restaurant.id}`, payload)
 		yield put(putRestaurantSuccess())
+    toastr.success('Restaurant Updated', '')
+
 	} catch (err) {
 		yield put(putRestaurantError())
+    errorToast(err)
+
 	}
 }
 
@@ -73,8 +82,12 @@ export function* handleDeleteRestaurant({ type }: {
 
     yield API.put(`restaurants/${restaurant.id}/delete`)
 		yield put(deleteRestaurantSuccess())
+    toastr.success('Restaurant Deleted', '')
+
 	} catch (err) {
 		yield put(deleteRestaurantError())
+    errorToast(err)
+
 	}
 }
 

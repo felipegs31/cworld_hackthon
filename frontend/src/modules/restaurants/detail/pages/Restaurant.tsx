@@ -1,21 +1,11 @@
 import React, {useEffect} from 'react';
-import clsx from 'clsx';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles } from '@material-ui/core/styles';
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  CardHeader,
   Dialog
 } from '@material-ui/core/'
 import * as actions from './../state/actions';
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  useParams
-} from "react-router-dom";
 import Header from './../components/Header/Header'
 import Ratings from './../components/Ratings/Ratings'
 

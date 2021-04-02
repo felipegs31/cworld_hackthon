@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -10,8 +10,7 @@ import * as actions from './../../state/actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import UserInfo from './UserInfo';
-import { ERoles } from '../../models/ERoles';
-import { IUser } from '../../models/IUser';
+
 
 const drawerWidth = 240;
 

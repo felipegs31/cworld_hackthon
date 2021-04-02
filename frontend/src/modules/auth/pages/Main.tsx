@@ -8,7 +8,6 @@ import { IApplicationState } from '../../../store/roots/rootReducer';
 import { useSelector } from 'react-redux'
 import withSession from '../HOC/withSession';
 import { IUser } from '../models/IUser';
-import { ERoles } from '../models/ERoles';
 import PrivateRoutes from '../../../PrivateRoutes';
 import { Container } from '@material-ui/core';
 

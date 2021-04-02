@@ -12,6 +12,8 @@ import { usersListSuccess,
          deleteUserSuccess,
          deleteUserError } from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
+import { toastr } from 'react-redux-toastr'
+import errorToast from '../../../../utils/models/errorToast';
 
 export function* handleUsersListRequest({ type }: {
   type: string
@@ -46,8 +48,10 @@ export function* handlePostInviteUser({ type, payload }: {
 
     yield API.post(`inviteuser`, payload)
 		yield put(postInviteUserSuccess())
+    toastr.success('User Invited', '')
 	} catch (err) {
 		yield put(postInviteUserError())
+    errorToast(err)
 	}
 }
 
@@ -60,8 +64,10 @@ export function* handlePutUser({ type, payload }: {
 
     yield API.put(`users/${user.id}`, payload)
 		yield put(putUserSuccess())
+    toastr.success('User Updated', '')
 	} catch (err) {
 		yield put(putUserError())
+    errorToast(err)
 	}
 }
 
@@ -73,7 +79,9 @@ export function* handleDeleteUser({ type }: {
 
     yield API.put(`users/${user.id}/delete`)
 		yield put(deleteUserSuccess())
+    toastr.success('User Deleted', '')
 	} catch (err) {
 		yield put(deleteUserError())
+    errorToast(err)
 	}
 }

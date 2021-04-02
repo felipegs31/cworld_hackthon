@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../state/actions';
 import { IApplicationState } from '../../../../../store/roots/rootReducer';
 
-import TablePaginationActionsWrapped from "../../../../../design-system/Table/TablePaginationActions";
 import { IPayload } from '../../../../../utils/models/IPayload';
 import { IRestaurant } from '../../models/IRestaurant';
 import { Pagination } from '@material-ui/lab';

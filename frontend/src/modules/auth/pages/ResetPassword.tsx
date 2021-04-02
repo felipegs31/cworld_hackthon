@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from './../state/actions';
 
 import {
-  Container, Avatar, Button, CssBaseline,
-  TextField, Radio, RadioGroup,
-  FormControlLabel, FormLabel,
-  Checkbox, Link, Grid, Box, Typography, CircularProgress, AppBar,
+  Container, Button, CssBaseline,
+  TextField,
+  Grid, Typography, CircularProgress, AppBar,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Email from "@material-ui/icons/EmailOutlined";

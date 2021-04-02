@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { IApplicationState } from '../../../../../store/roots/rootReducer';
 import {
   Paper,

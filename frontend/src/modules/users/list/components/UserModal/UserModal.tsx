@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { IApplicationState } from '../../../../../store/roots/rootReducer';
 import {
   Typography,
   IconButton,
-  Avatar,
-  Paper,
-  LinearProgress,
-  Grid,
-  Modal,
   TextField,
   FormControl,
   FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Switch
 } from '@material-ui/core/'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from "react-router-dom";
-import Rating from '@material-ui/lab/Rating';
 import { isEmpty } from 'lodash'
 import * as actions from './../../state/actions';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DoneIcon from '@material-ui/icons/Done';
-import DateFnsUtils from '@date-io/date-fns';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { IUser, IUserData } from '../../models/IUser';
 
