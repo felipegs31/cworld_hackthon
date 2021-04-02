@@ -14,7 +14,7 @@ beforeEach(async () => {
   const admin = await User.create({ email: 'c@c.com', password: '123456', role: 'admin' })
   userSession = signSync(user.id)
   adminSession = signSync(admin.id)
-  restaurants = await Restaurants.create({})
+  restaurants = await Restaurants.create({name: 'test', photoUrl: 'test', category: 'test'})
 })
 
 test('POST /restaurants 201 (admin)', async () => {

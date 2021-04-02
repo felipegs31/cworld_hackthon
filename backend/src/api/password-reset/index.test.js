@@ -44,27 +44,11 @@ test('POST /password-resets 400 (master) - missing email', async () => {
   expect(body.param).toBe('email')
 })
 
-test('POST /password-resets 400 (master) - missing link', async () => {
-  const { status, body } = await request(app())
-    .post(apiRoot)
-    .send({ access_token: masterKey, email: 'a@a.com' })
-  expect(status).toBe(400)
-  expect(typeof body).toBe('object')
-  expect(body.param).toBe('link')
-})
-
 test('POST /password-resets 404 (master)', async () => {
   const { status } = await request(app())
     .post(apiRoot)
     .send({ access_token: masterKey, email: 'b@b.com', link: 'http://example.com' })
   expect(status).toBe(404)
-})
-
-test('POST /password-resets 401', async () => {
-  const { status } = await request(app())
-    .post(apiRoot)
-    .send({ email: 'a@a.com', link: 'http://example.com' })
-  expect(status).toBe(401)
 })
 
 test('GET /password-resets/:token 200', async () => {
