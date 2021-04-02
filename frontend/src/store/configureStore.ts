@@ -11,7 +11,7 @@ const sagaMiddleware = createSagaMiddleware();
 export default function configureStore (
 	initialState: IApplicationState
 ): Store<IApplicationState> {
-  const composeEnhancers = process.env.NODE_ENV === 'development' ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose
+  const composeEnhancers = process.env.REACT_APP_ENV === 'development' ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose
   const middlewares = applyMiddleware(sagaMiddleware) // Create Store
 
 	const store = createStore(rootReducer, initialState, composeEnhancers(

@@ -70,6 +70,7 @@ const RestaurantActionBar: React.FC = () => {
       <div className={classes.searchRow}>
         <SearchIcon className={classes.searchIcon} />
         <InputBase
+          data-testid="searchInput"
           className={classes.search}
           placeholder="Search Restaurants"
           value={text}

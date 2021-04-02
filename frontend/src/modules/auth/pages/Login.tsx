@@ -98,6 +98,7 @@ const Login: React.FC = () => {
             {loading && <div className={classes.overlay}></div>}
             {loading && <SpinnerOverlay />}
             <TextField
+              data-testid="email"
               variant="outlined"
               margin="normal"
               required
@@ -116,6 +117,7 @@ const Login: React.FC = () => {
               }}
             />
             <TextField
+              data-testid="password"
               variant="outlined"
               margin="normal"
               required
@@ -135,6 +137,7 @@ const Login: React.FC = () => {
             />
             {loginError && <div style={{ color: 'red' }}>Invalid email or password</div>}
             <Button
+              data-testid="signinButton"
               fullWidth
               variant="contained"
               color="primary"
