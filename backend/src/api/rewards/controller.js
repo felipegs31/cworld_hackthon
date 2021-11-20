@@ -1,11 +1,18 @@
 import { success, notFound } from '../../services/response/'
 import { Rewards } from '.'
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  Rewards.create(body)
-    .then((campaigns) => campaigns.view(true))
-    .then(success(res, 201))
-    .catch(next)
+export const createReward = (campaign, tweet) => {
+  Rewards.create({
+    influencerTwitterId: tweet.author_id,
+    key: `${campaign._id}|${tweet.author_id}`,
+    campaign: campaign._id,
+    positivity: tweet.sentiment.SentimentScore.Positive,
+    tweetId: tweet.id,
+    value: 0.1
+  })
+    .then(reward => console.log("reward created", reward))
+    .catch(e => console.log("error create reward", e))
+}
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   Rewards.count(Object.assign(query, { deleted: false }))

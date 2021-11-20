@@ -6,7 +6,7 @@ export const fetchTwitter = async (campaign) => {
     method: 'GET',
     uri: `https://api.twitter.com/2/tweets/search/recent?tweet.fields=lang,created_at&expansions=author_id&query=${campaign.queryText} lang:pt`,
     headers: {
-      'Authorization': `Bearer ${env.TWITTER_BEARER_TOKEN}`
+      'Authorization': `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
     },
     json: true
   })

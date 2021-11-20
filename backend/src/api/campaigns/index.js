@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
-import { create, index, show, update, destroy, soft_delete, analyze } from './controller'
+import { create, index, show, update, destroy, soft_delete, showRewards, analyze } from './controller'
 import { schema } from './model'
 export Campaigns, { schema } from './model'
 
@@ -57,8 +57,14 @@ router.get('/',
 * @apiError 401 user access only.
 */
 router.post('/:id/analyze',
-  body({ }),
+  body({}),
   analyze)
+
+
+router.get('/:id/rewards',
+  token({ required: true }),
+  query(),
+  showRewards)
 
 /**
  * @api {get} /restaurants/:id Retrieve restaurants

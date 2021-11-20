@@ -9,7 +9,6 @@ const rewardsSchema = new Schema({
     type: String,
     unique: true
   },
-  twitterId: String,
   campaign: {
     type: Schema.Types.ObjectId,
     ref: 'Campaigns'
@@ -20,6 +19,7 @@ const rewardsSchema = new Schema({
     type: Boolean,
     default: false
   },
+  value: Number,
   deleted: {
     type: Boolean,
     default: false
@@ -40,7 +40,6 @@ rewardsSchema.methods = {
       id: this.id,
       influencerTwitterId: this.influencerTwitterId,
       key: this.key,
-      twitterId: this.twitterId,
       campaign: this.campaign,
       positivity: this.positivity,
       tweetId: this.tweetId,
