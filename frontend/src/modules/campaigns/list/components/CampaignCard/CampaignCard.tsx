@@ -79,7 +79,8 @@ const CampaignCard: React.FC<props> = ({ campaign }: props) => {
   const user: IUser = useSelector((state: IApplicationState) => state.auth.user)
 
   const hadleGoToDetails = () => {
-    history.push(`${campaign.id}`)
+    dispatch(actions.openCampaignDetails(campaign))
+    history.push(`/company/campaigns/${campaign.id}`)
   }
 
   const handleOpenCampaignModal = (e:any, campaign: ICampaign) => {

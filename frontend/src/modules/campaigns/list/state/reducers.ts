@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 export const INITIAL_STATE: ICampaignsListState = {
 	loading: false,
   error: false,
+  campaign: {} as ICampaign,
   campaigns: {
     count: 0,
     rows: []
@@ -91,6 +92,17 @@ const campaignsListChangeSearchText = (state: ICampaignsListState, {type, payloa
     loading: true,
     searchText: payload,
     page: 1
+  }
+}
+
+const openCampaignDetails = (state: ICampaignsListState, {type, payload}: {
+  type: string,
+  payload: ICampaign
+} ): ICampaignsListState => {
+
+  return {
+    ...state,
+    campaign: !isEmpty(payload) ? payload : {} as ICampaign
   }
 }
 
@@ -205,6 +217,7 @@ export const campaignsListReducer: Reducer<ICampaignsListState> = (
 		case ActionTypes.CAMPAIGNS_LIST_CHANGE_SEARCH_TEXT: return campaignsListChangeSearchText(state, action)
 
     case ActionTypes.OPEN_CAMPAIGN_MODAL: return openRestaurantModal(state, action)
+    case ActionTypes.OPEN_CAMPAIGN_DETAILS: return openCampaignDetails(state, action)
 		case ActionTypes.CLOSE_CAMPAIGN_MODAL: return closeRestaurantModal(state)
 
     case ActionTypes.POST_CAMPAIGN: return postRestaurant(state)

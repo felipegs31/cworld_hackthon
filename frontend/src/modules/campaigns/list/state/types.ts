@@ -14,6 +14,7 @@ export enum ActionTypes {
   CAMPAIGNS_LIST_CHANGE_SEARCH_TEXT = '@campaigns_list/CAMPAIGNS_LIST_CHANGE_SEARCH_TEXT',
 
   OPEN_CAMPAIGN_MODAL = '@campaigns_list/OPEN_CAMPAIGN_MODAL',
+  OPEN_CAMPAIGN_DETAILS = '@campaigns_list/OPEN_CAMPAIGN_DETAILS',
   CLOSE_CAMPAIGN_MODAL = '@campaigns_list/CLOSE_CAMPAIGN_MODAL',
 
   POST_CAMPAIGN = '@campaigns_list/POST_CAMPAIGN',
@@ -47,4 +48,6 @@ export interface ICampaignsListState {
   readonly campaignModalOpen: boolean
   readonly campaignModalLoading: boolean
   readonly campaignToEdit: ICampaign
+  readonly campaign: ICampaign
+
 }

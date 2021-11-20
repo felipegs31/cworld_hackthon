@@ -8,10 +8,12 @@ export interface ICampaign {
   filterTags: string[]
   goals: string
   id: string
+  queryText: string
+  positivity: number
 }
 
 export interface ICampaignData {
-  name: string
+  name: string,
   budget: number,
   photoUrl: string
   startDate: Date | null
@@ -19,4 +21,6 @@ export interface ICampaignData {
   ageRange: number[]
   filterTags: string[]
   goals: string
+  queryText: string,
+  positivity: number
 }

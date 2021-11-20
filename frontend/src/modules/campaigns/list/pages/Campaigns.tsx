@@ -76,7 +76,7 @@ const Campaigns: React.FC = () => {
           >
             {loading && <div className={classes.overlay}></div>}
             {loading && <SpinnerOverlay />}
-            {campaigns.rows.map(campaign => <CampaignCard campaign={campaign} key={campaign.id}/>)}
+            {campaigns.rows.map(campaign => <CampaignCard campaign={campaign} key={campaign.id} />)}
           </Grid>
         </div>
         {!isEmpty(campaigns.rows) && <CampaignPagination />}
@@ -89,7 +89,7 @@ const Campaigns: React.FC = () => {
         open={campaignModalOpen}
         onClose={() => handleCloseCampaignModal()}
       >
-        <CampaignModal/>
+        <CampaignModal />
       </Dialog>
     </>
   )

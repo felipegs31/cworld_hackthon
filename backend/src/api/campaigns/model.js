@@ -12,7 +12,7 @@ const campaignsSchema = new Schema({
     required: true
   },
   photoUrl: {
-    type: String,
+    type: String
   },
   startDate: {
     type: Date
@@ -20,11 +20,12 @@ const campaignsSchema = new Schema({
   endDate: {
     type: Date
   },
+  queryText: String,
   ageRange: {
     type: [Number]
   },
   filterTags: {
-    type: [String],
+    type: [String]
   },
   goals: {
     type: String
@@ -33,6 +34,7 @@ const campaignsSchema = new Schema({
     type: Boolean,
     default: false
   },
+  positivity: Number,
   createdBy: { type: Schema.Types.ObjectId, ref: 'Users'}
 }, {
   timestamps: true,
@@ -76,7 +78,9 @@ campaignsSchema.methods = {
       goals: this.goals,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      createdBy: this.createdBy
+      createdBy: this.createdBy,
+      queryText: this.queryText,
+      positivity: this.positivity
     }
 
     return full ? {

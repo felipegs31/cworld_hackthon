@@ -2,12 +2,12 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
-import { create, index, show, update, destroy, soft_delete } from './controller'
+import { create, index, show, update, destroy, soft_delete, analyze } from './controller'
 import { schema } from './model'
 export Campaigns, { schema } from './model'
 
 const router = new Router()
-const { name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals } = schema.tree
+const { name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals, queryText, positivity } = schema.tree
 
 /**
  * @api {post} /restaurants Create restaurants
@@ -25,7 +25,7 @@ const { name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals 
  */
 router.post('/',
   token({ required: true }),
-  body({ name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals }),
+  body({ name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals, queryText, positivity }),
   create)
 
 /**
@@ -44,6 +44,21 @@ router.get('/',
   token({ required: true }),
   query(),
   index)
+
+/**
+* @api {get} /restaurants/:id Retrieve restaurants
+* @apiName RetrieveRestaurants
+* @apiGroup Restaurants
+* @apiPermission user
+* @apiParam {String} access_token user access token.
+* @apiSuccess {Object} restaurants Restaurants's data.
+* @apiError {Object} 400 Some parameters may contain invalid values.
+* @apiError 404 Restaurants not found.
+* @apiError 401 user access only.
+*/
+router.post('/:id/analyze',
+  body({ }),
+  analyze)
 
 /**
  * @api {get} /restaurants/:id Retrieve restaurants
@@ -76,7 +91,7 @@ router.get('/:id',
  */
 router.put('/:id',
   token({ required: true }),
-  body({ name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals }),
+  body({ name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals, queryText, positivity }),
   update)
 
 /**

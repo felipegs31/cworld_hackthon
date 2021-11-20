@@ -49,6 +49,8 @@ const CampaignModal: React.FC = () => {
 
   const [isNewData, setIsNewData] = useState(true);
   const [name, setName] = useState('');
+  const [queryText, setQueryText] = useState('');
+  const [positivity, setPositivity] = useState(0);
   const [photoUrl, setPhotoUrl] = useState('');
 
   const [budget, setBudget] = useState<number>(0);
@@ -58,11 +60,13 @@ const CampaignModal: React.FC = () => {
   const [goals, setGoals] = useState<string>('')
 
 
-  const [ageRange, setAgeRange] = useState<number[]>([18,60]);
+  const [ageRange, setAgeRange] = useState<number[]>([18, 60]);
 
 
 
   const [nameError, setNameError] = useState(false);
+  const [queryTextError, setQueryTextError] = useState(false);
+  const [positivityError, setPositivityError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
   const [endDateError, setEndDateError] = useState(false);
   const [filterTagsError, setFilterTagsError] = useState(false);
@@ -75,9 +79,11 @@ const CampaignModal: React.FC = () => {
     if (isEmpty(campaignToEdit)) {
       setIsNewData(true)
       setName('')
+      setQueryText('')
+      setPositivity(90)
       setPhotoUrl('')
       setBudget(0)
-      setAgeRange([18,60])
+      setAgeRange([18, 60])
       setStartDate(null)
       setEndDate(null)
       setFilterTags([])
@@ -85,6 +91,8 @@ const CampaignModal: React.FC = () => {
     } else {
       setIsNewData(false)
       setName(campaignToEdit.name)
+      setQueryText(campaignToEdit.queryText)
+      setPositivity(campaignToEdit.positivity)
       setPhotoUrl(campaignToEdit.photoUrl)
       setBudget(campaignToEdit.budget)
       setAgeRange(campaignToEdit.ageRange)
@@ -124,7 +132,19 @@ const CampaignModal: React.FC = () => {
       return
     }
 
+    if (!positivity) {
+      hasError = true
+      setPositivityError(true)
+    }
+
+    if (!queryText) {
+      hasError = true
+      setQueryTextError(true)
+    }
+
+
     const body: ICampaignData = {
+      queryText,
       name,
       photoUrl,
       budget,
@@ -132,7 +152,8 @@ const CampaignModal: React.FC = () => {
       startDate,
       endDate,
       filterTags,
-      goals
+      goals,
+      positivity
     };
 
     if (isNewData) {
@@ -241,7 +262,7 @@ const CampaignModal: React.FC = () => {
         </MuiPickersUtilsProvider>
       </FormControl>
 
-     
+
       <FormControl fullWidth margin='normal' required>
         <FormLabel htmlFor="age-range">Age Range</FormLabel>
         <Slider
@@ -263,6 +284,33 @@ const CampaignModal: React.FC = () => {
         />
       </FormControl>
 
+      <FormControl fullWidth margin='normal' required>
+        <TextField
+          label="Minimum positivity"
+          value={positivity}
+          type="number"
+          inputProps={{
+            maxLength: 13,
+            step: "0.1"
+          }}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setPositivity(Number(event.target.value))
+          }}
+        />
+      </FormControl>
+
+      <FormControl fullWidth margin='normal' required>
+        <TextField
+          label="Query Text"
+          value={queryText}
+          error={queryTextError}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setQueryText(event.target.value)
+            setQueryTextError(false)
+          }}
+        />
+      </FormControl>
+
       <FormControl fullWidth margin='normal'>
         <TextField
           id="standard-multiline-flexible"
@@ -274,9 +322,9 @@ const CampaignModal: React.FC = () => {
           }}
         />
       </FormControl>
-      
+
       <div className={classes.submitContainer}>
-        <IconButton disabled={campaignModalLoading} type="submit"><DoneIcon className={classes.submitButton} fontSize='large'/></IconButton>
+        <IconButton disabled={campaignModalLoading} type="submit"><DoneIcon className={classes.submitButton} fontSize='large' /></IconButton>
       </div>
     </form>
   )
