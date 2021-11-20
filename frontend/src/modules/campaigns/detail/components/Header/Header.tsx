@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import {
   ArrowBack,
 } from '@material-ui/icons';
-import { IRestaurant } from '../../models/IRestaurant';
+import { ICampaign } from '../../models/ICampaign';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
   let history = useHistory()
   const classes = useStyles()
 
-  const restaurant: IRestaurant = useSelector((state: IApplicationState) => state.restaurantDetail.restaurant)
+  const restaurant: ICampaign = useSelector((state: IApplicationState) => state.campaignDetail.campaign)
 
   const handleBack = () => {
     history.goBack()

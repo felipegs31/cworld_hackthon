@@ -3,38 +3,23 @@ import { IReview } from '../models/IReviews';
 import { IPayload } from '../../../../utils/models/IPayload';
 import { IRestaurant } from '../models/IRestaurant';
 import { Reducer } from 'redux';
-import { ActionTypes, IRestaurantDetailState } from './types'
+import { ActionTypes, ICampaignDetailState } from './types'
 import { IRatesPercent } from '../models/IRatesPercent';
 import { isEmpty } from 'lodash';
+import { ICampaign } from '../models/ICampaign';
+import { ITweet } from '../models/ITweet';
+import { ECampaignTabs } from '../models/ECampaignTabs';
 
-export const INITIAL_STATE: IRestaurantDetailState = {
+export const INITIAL_STATE: ICampaignDetailState = {
 	loading: false,
   error: false,
-  restaurant: {} as IRestaurant,
-  totalRates: 0,
-  ratesPercent: [],
-  reviews: {
-    count: 0,
-    rows: []
-  } as IPayload<IReview[]>,
-  loadingReviews: false,
-  errorReviews: false,
-
-  reviewHighest: {} as IReview,
-  loadingReviewHighest: false,
-  errorReviewHighest: false,
-
-  reviewLowest: {} as IReview,
-  loadingReviewLowest: false,
-  errorReviewLowest: false,
-
-  reviewModalOpen: false,
-  reviewToEdit: {} as IReview,
-  reviewModalLoading: false
+  campaign: {} as ICampaign,
+  tweets: [] as ITweet[],
+  tab: ECampaignTabs.CAMPAIGNDETAILS
 }
 
 
-const restaurantDetailRequest = (state: IRestaurantDetailState) :IRestaurantDetailState => {
+const campaignDetailRequest = (state: ICampaignDetailState) :ICampaignDetailState => {
   return {
     ...state,
     loading: true,
@@ -42,35 +27,19 @@ const restaurantDetailRequest = (state: IRestaurantDetailState) :IRestaurantDeta
   }
 }
 
-const restaurantDetailSuccess = (state: IRestaurantDetailState, {type, payload}: {
+const campaignDetailSuccess = (state: ICampaignDetailState, {type, payload}: {
   type: string,
-  payload: IRestaurant
-} ): IRestaurantDetailState => {
-  const rates = payload.rates as any
-  let sum = 0
-  const ratesPercent: IRatesPercent[] = []
-
-  Object.keys(rates).forEach((key: string) =>
-    sum += rates[key]
-  )
-
-  Object.keys(rates).forEach((key: string, index: number) => {
-    return ratesPercent.unshift({
-      percent: sum === 0 ? 0 : Math.round(rates[key]/sum * 100),
-      stars: index + 1
-    })
-  })
+  payload: ICampaign
+} ): ICampaignDetailState => {
 
   return {
     ...state,
     loading: false,
-    restaurant: payload,
-    totalRates: sum,
-    ratesPercent
+    campaign: payload,
   }
 }
 
-const restaurantDetailError = (state: IRestaurantDetailState): IRestaurantDetailState => {
+const campaignDetailError = (state: ICampaignDetailState): ICampaignDetailState => {
   return {
     ...state,
     loading: false,
@@ -78,231 +47,56 @@ const restaurantDetailError = (state: IRestaurantDetailState): IRestaurantDetail
   }
 }
 
-const reviewsRequest = (state: IRestaurantDetailState) :IRestaurantDetailState => {
+const scanInfluencersRequest = (state: ICampaignDetailState) :ICampaignDetailState => {
   return {
     ...state,
-    loadingReviews: true,
-    errorReviews: false
+    loading: true,
+    error: false
   }
 }
 
-const reviewsSuccess = (state: IRestaurantDetailState, {type, payload}: {
+const scanInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
   type: string,
-  payload: {data: IPayload<IReview[]>, user: IUser}
-} ): IRestaurantDetailState => {
-  const reviewWithEdit: IReview[] = payload.data.rows.map(review => {
-    if (payload.user && (payload.user.role === 'admin'|| review.user.id === payload.user.id)) {
-      return {
-        ...review,
-        editable: true
-      }
-    } else {
-      return {
-        ...review,
-        editable: false
-      }
-    }
-  })
+  payload: Array<ITweet>
+} ): ICampaignDetailState => {
 
   return {
     ...state,
-    loadingReviews: false,
-    reviews: {
-      count: payload.data.count,
-      rows: reviewWithEdit
-    }
+    loading: false,
+    tweets: payload,
   }
 }
 
-const reviewsError = (state: IRestaurantDetailState): IRestaurantDetailState => {
+const scanInfluencersError = (state: ICampaignDetailState): ICampaignDetailState => {
   return {
     ...state,
-    loadingReviews: false,
-    errorReviews: true
+    loading: false,
+    error: true
   }
 }
 
-const reviewHighestRequest = (state: IRestaurantDetailState) :IRestaurantDetailState => {
+const setTabCampaign = (state: ICampaignDetailState, action: any ): ICampaignDetailState => {
+  console.log('action', action)
   return {
     ...state,
-    loadingReviewHighest: true,
-    errorReviewHighest: false
+    tab: action.payload.tab
   }
 }
 
-const reviewHighestSuccess = (state: IRestaurantDetailState, {type, payload}: {
-  type: string,
-  payload: IReview
-} ): IRestaurantDetailState => {
-  return {
-    ...state,
-    loadingReviewHighest: false,
-    reviewHighest: payload,
-  }
-}
-
-const reviewHighestError = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    loadingReviewHighest: false,
-    errorReviewHighest: true,
-    reviewHighest: {} as IReview
-  }
-}
-
-const reviewLowestRequest = (state: IRestaurantDetailState) :IRestaurantDetailState => {
-  return {
-    ...state,
-    loadingReviewLowest: true,
-    errorReviewLowest: false
-  }
-}
-
-const reviewLowestSuccess = (state: IRestaurantDetailState, {type, payload}: {
-  type: string,
-  payload: IReview
-} ): IRestaurantDetailState => {
-  return {
-    ...state,
-    loadingReviewLowest: false,
-    reviewLowest: payload,
-  }
-}
-
-const reviewLowestError = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    loadingReviewLowest: false,
-    errorReviewLowest: true,
-    reviewLowest: {} as IReview
-  }
-}
-
-const openReviewModal = (state: IRestaurantDetailState, {type, payload}: {
-  type: string,
-  payload: IReview
-} ): IRestaurantDetailState => {
-
-  return {
-    ...state,
-    reviewModalOpen: true,
-    reviewToEdit: !isEmpty(payload) ? payload : {} as IReview
-  }
-}
-
-const closeReviewModal = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalOpen: false,
-    reviewToEdit: {} as IReview
-  }
-}
-
-const postReview = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: true,
-  }
-}
-
-const postReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: false,
-    reviewModalOpen: false
-  }
-}
-
-const postReviewError = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: false
-  }
-}
-
-const putReview = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: true,
-  }
-}
-
-const putReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalOpen: false,
-    reviewModalLoading: false,
-    reviewToEdit: {} as IReview
-  }
-}
-
-const putReviewError = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: false
-  }
-}
-
-const deleteReview = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: true,
-  }
-}
-
-const deleteReviewSuccess = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalOpen: false,
-    reviewModalLoading: false,
-    reviewToEdit: {} as IReview
-  }
-}
-
-const deleteReviewError = (state: IRestaurantDetailState): IRestaurantDetailState => {
-  return {
-    ...state,
-    reviewModalLoading: false
-  }
-}
-
-
-export const restaurantDetailReducer: Reducer<IRestaurantDetailState> = (
-	state: IRestaurantDetailState = INITIAL_STATE,
+export const campaignDetailReducer: Reducer<ICampaignDetailState> = (
+	state: ICampaignDetailState = INITIAL_STATE,
 	action: any
-): IRestaurantDetailState => {
+): ICampaignDetailState => {
 	switch (action.type) {
-		case ActionTypes.RESTAURANT_DETAIL_REQUEST: return restaurantDetailRequest(state)
-		case ActionTypes.RESTAURANT_DETAIL_SUCCESS: return restaurantDetailSuccess(state, action)
-		case ActionTypes.RESTAURANT_DETAIL_ERROR: return restaurantDetailError(state)
+		case ActionTypes.CAMPAIGN_DETAIL_REQUEST: return campaignDetailRequest(state)
+		case ActionTypes.CAMPAIGN_DETAIL_SUCCESS: return campaignDetailSuccess(state, action)
+		case ActionTypes.CAMPAIGN_DETAIL_ERROR: return campaignDetailError(state)
 
-    case ActionTypes.REVIEWS_REQUEST: return reviewsRequest(state)
-		case ActionTypes.REVIEWS_SUCCESS: return reviewsSuccess(state, action)
-		case ActionTypes.REVIEWS_ERROR: return reviewsError(state)
+    case ActionTypes.SCAN_INFLUENCERS_REQUEST: return scanInfluencersRequest(state)
+		case ActionTypes.SCAN_INFLUENCERS_SUCCESS: return scanInfluencersSuccess(state, action)
+		case ActionTypes.SCAN_INFLUENCERS_ERROR: return scanInfluencersError(state)
 
-    case ActionTypes.REVIEW_HIGHEST_REQUEST: return reviewHighestRequest(state)
-		case ActionTypes.REVIEW_HIGHEST_SUCCESS: return reviewHighestSuccess(state, action)
-		case ActionTypes.REVIEW_HIGHEST_ERROR: return reviewHighestError(state)
-
-    case ActionTypes.REVIEW_LOWEST_REQUEST: return reviewLowestRequest(state)
-		case ActionTypes.REVIEW_LOWEST_SUCCESS: return reviewLowestSuccess(state, action)
-		case ActionTypes.REVIEW_LOWEST_ERROR: return reviewLowestError(state)
-
-		case ActionTypes.OPEN_REVIEW_MODAL: return openReviewModal(state, action)
-		case ActionTypes.CLOSE_REVIEW_MODAL: return closeReviewModal(state)
-
-		case ActionTypes.POST_REVIEW: return postReview(state)
-		case ActionTypes.POST_REVIEW_SUCCESS: return postReviewSuccess(state)
-		case ActionTypes.POST_REVIEW_ERROR: return postReviewError(state)
-
-		case ActionTypes.PUT_REVIEW: return putReview(state)
-		case ActionTypes.PUT_REVIEW_SUCCESS: return putReviewSuccess(state)
-		case ActionTypes.PUT_REVIEW_ERROR: return putReviewError(state)
-
-		case ActionTypes.DELETE_REVIEW: return deleteReview(state)
-		case ActionTypes.DELETE_REVIEW_SUCCESS: return deleteReviewSuccess(state)
-		case ActionTypes.DELETE_REVIEW_ERROR: return deleteReviewError(state)
-
+    case ActionTypes.SET_TAB_CAMPAIGN: return setTabCampaign(state, action)
 
 		default:
 			return state

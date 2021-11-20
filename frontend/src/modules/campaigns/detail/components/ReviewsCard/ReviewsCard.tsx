@@ -45,7 +45,6 @@ const ReviewsCard: React.FC<props> = ({ review, canEdit }: props) => {
   const dispatch = useDispatch()
 
   const handleOpenReviewModal = (review: IReview) => {
-    dispatch(actions.openReviewModal(review))
   }
 
   return (
