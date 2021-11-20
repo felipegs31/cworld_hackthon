@@ -4,11 +4,12 @@ import { Rewards } from '../rewards'
 import { fetchTwitter, detectSentiment } from './utils'
 import { createReward } from '../rewards/controller'
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  Campaigns.create(body)
+export const create = ({ user ,bodymen: { body } }, res, next) => {
+  Campaigns.create({...body, createdBy: user.id })
     .then((campaigns) => campaigns.view(true))
     .then(success(res, 201))
     .catch(next)
+}
 
 export const analyze = ({ bodymen: { body }, params }, res, next) => {
   Campaigns.findById(params.id)
@@ -27,9 +28,9 @@ export const analyze = ({ bodymen: { body }, params }, res, next) => {
     .catch(next)
 }
 
-export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  Campaigns.count(Object.assign(query, { deleted: false }))
-    .then(count => Campaigns.find(Object.assign(query, { deleted: false }), select, cursor)
+export const index = ({ user, querymen: { query, select, cursor } }, res, next) =>
+  Campaigns.count(Object.assign(query, { deleted: false, createdBy: user.id }))
+    .then(count => Campaigns.find(Object.assign(query, { deleted: false, createdBy: user.id }), select, cursor)
       .then((campaigns) => ({
         count,
         rows: campaigns.map((campaigns) => campaigns.view())
@@ -38,8 +39,8 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
     .then(success(res))
     .catch(next)
 
-export const show = ({ params }, res, next) =>
-  Campaigns.findById(params.id)
+export const show = ({ user, params }, res, next) =>
+  Campaigns.findOne({_id: params.id, createdBy: user.id})
     .then(notFound(res))
     .then((campaigns) => campaigns ? campaigns.view() : null)
     .then(success(res))
@@ -58,7 +59,7 @@ export const showRewards = ({ params, querymen: { query, select, cursor } }, res
 }
 
 export const update = ({ bodymen: { body }, params }, res, next) =>
-  Campaigns.findById(params.id)
+  Campaigns.findOne({_id: params.id, createdBy: user.id})
     .then(notFound(res))
     .then((campaigns) => campaigns ? Object.assign(campaigns, body).save() : null)
     .then((campaigns) => campaigns ? campaigns.view(true) : null)
@@ -66,14 +67,14 @@ export const update = ({ bodymen: { body }, params }, res, next) =>
     .catch(next)
 
 export const destroy = ({ params }, res, next) =>
-  Campaigns.findById(params.id)
+  Campaigns.findOne({_id: params.id, createdBy: user.id})
     .then(notFound(res))
     .then((campaigns) => campaigns ? campaigns.remove() : null)
     .then(success(res, 204))
     .catch(next)
 
 export const soft_delete = ({ params }, res, next) =>
-  Campaigns.findById(params.id)
+  Campaigns.findOne({_id: params.id, createdBy: user.id})
     .then(notFound(res))
     .then((campaigns) => campaigns ? Object.assign(campaigns, { deleted: true }).save() : null)
     .then((campaigns) => campaigns ? campaigns.view(true) : null)
