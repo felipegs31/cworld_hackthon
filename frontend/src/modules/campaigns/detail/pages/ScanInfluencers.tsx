@@ -8,6 +8,7 @@ import * as actions from '../state/actions';
 import { useDispatch, useSelector } from 'react-redux'
 import { ICampaign, ICampaignData } from '../../../campaigns/list/models/ICampaign';
 import { ITweet } from '../models/ITweet';
+const TwitterTweetEmbed = require('react-twitter-embed');
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +26,7 @@ const ScanInfluencers: React.FC = () => {
   const scanInfluencersRequest = () => {
     dispatch(actions.scanInfluencersRequest())
   }
-  
+
   useEffect(() => {
     console.log('HELLO')
     scanInfluencersRequest()
@@ -34,14 +35,12 @@ const ScanInfluencers: React.FC = () => {
   return (
     <div className={classes.root}>
       hey
-      {/* {console.log('tweets', tweets)} */}
-      {/* {tweets.map(tweet => {
+      {tweets.map(tweet => {
         <TwitterTweetEmbed
           tweetId={tweet.id}
         />
       })}
-       */}
-      
+
     </div>
   )
 }
