@@ -19,11 +19,9 @@ export function* handleCampaignDetailRequest({ type }: {
   type: string,
 }): Generator{
 	try {
-	console.log('History.location', History.location)
     const { pathname } = History.location
 
 	const url = pathname.replace('/company/','');
-	console.log('url', url)
     const res: any = yield API.get(`${url}`)
     const data: ICampaign = res.data
 		yield put(campaignDetailSuccess(data))
@@ -42,7 +40,6 @@ export function* handleScanInfluencersRequest({ type }: {
 	type: string,
   }): Generator{
 	  try {
-	  console.log('History.location', History.location)
 	  const { pathname } = History.location
   
 	  const url = pathname.replace('/company/','');
