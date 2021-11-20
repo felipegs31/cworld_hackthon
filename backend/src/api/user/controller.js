@@ -1,10 +1,11 @@
 import { success, notFound } from '../../services/response/'
 import { User } from '.'
+import { Rewards } from '../rewards'
 import { sign } from '../../services/jwt'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
-  User.count(Object.assign(query, {deleted: false}))
-    .then(count => User.find(Object.assign(query, {deleted: false}), select, cursor)
+  User.count(Object.assign(query, { deleted: false }))
+    .then(count => User.find(Object.assign(query, { deleted: false }), select, cursor)
       .then(users => ({
         rows: users.map((user) => user.view(true)),
         count
@@ -12,6 +13,18 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
     )
     .then(success(res))
     .catch(next)
+
+export const rewards = ({ user, querymen: { query, select, cursor } }, res, next) => {
+  Rewards.count({ influencerTwitterId: user.twitterId })
+    .then(count => Rewards.find({ influencerTwitterId: user.twitterId }, select, cursor)
+      .then((rewards) => ({
+        count,
+        rows: rewards.map((rewards) => rewards.view())
+      }))
+    )
+    .then(success(res))
+    .catch(next)
+}
 
 export const show = ({ params }, res, next) =>
   User.findById(params.id)
@@ -95,7 +108,7 @@ export const destroy = ({ params }, res, next) =>
 export const soft_delete = ({ params }, res, next) =>
   User.findById(params.id)
     .then(notFound(res))
-    .then((user) => user ? Object.assign(user, {deleted: true}).save() : null)
+    .then((user) => user ? Object.assign(user, { deleted: true }).save() : null)
     .then((user) => user ? user.view(true) : null)
     .then(success(res))
     .catch(next)

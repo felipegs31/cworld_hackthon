@@ -34,6 +34,7 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
+  twitterId: String,
   deleted: {
     type: Boolean,
     default: false

@@ -11,6 +11,10 @@ const campaignsSchema = new Schema({
     type: Number,
     required: true
   },
+  spendedBudget: {
+    type: Number,
+    default: 0
+  },
   photoUrl: {
     type: String
   },
@@ -35,7 +39,7 @@ const campaignsSchema = new Schema({
     default: false
   },
   positivity: Number,
-  createdBy: { type: Schema.Types.ObjectId, ref: 'Users'}
+  createdBy: { type: Schema.Types.ObjectId, ref: 'Users' }
 }, {
   timestamps: true,
   toJSON: {
@@ -58,13 +62,13 @@ campaignsSchema.pre('save', function (next) {
       sumOfStars += this.rates[key] * index
     }
   });
-  const average = sumOfElements === 0 ? 0 : round(sumOfStars/sumOfElements, 2)
+  const average = sumOfElements === 0 ? 0 : round(sumOfStars / sumOfElements, 2)
   this.averageRate = average
   next()
 })
 
 campaignsSchema.methods = {
-  view (full) {
+  view(full) {
     const view = {
       // simple view
       id: this.id,

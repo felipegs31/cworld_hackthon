@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy, soft_delete } from './controller'
+import { index, rewards, showMe, show, create, update, updatePassword, destroy, soft_delete } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
@@ -38,6 +38,19 @@ router.get('/me',
   showMe)
 
 /**
+* @api {get} /users/me Retrieve current user
+* @apiName RetrieveCurrentUser
+* @apiGroup User
+* @apiPermission user
+* @apiParam {String} access_token User access_token.
+* @apiSuccess {Object} user User's data.
+*/
+router.get('/rewards',
+  token({ required: true }),
+  query(),
+  rewards)
+
+/**
  * @api {get} /users/:id Retrieve user
  * @apiName RetrieveUser
  * @apiGroup User
@@ -66,7 +79,7 @@ router.get('/:id',
  * @apiError 409 Email already registered.
  */
 router.post('/',
-  body({ email, password, name}),
+  body({ email, password, name }),
   create)
 
 /**
@@ -128,7 +141,7 @@ router.delete('/:id',
  * @apiError 401 Current user or admin access only.
  * @apiError 404 User not found.
  */
- router.put('/:id/delete',
+router.put('/:id/delete',
   token({ required: true, roles: ['admin'] }),
   soft_delete)
 
