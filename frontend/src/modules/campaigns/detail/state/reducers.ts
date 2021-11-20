@@ -57,13 +57,12 @@ const scanInfluencersRequest = (state: ICampaignDetailState) :ICampaignDetailSta
 
 const scanInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
   type: string,
-  payload: Array<ITweet>
+  payload: {data: Array<ITweet>}
 } ): ICampaignDetailState => {
-
   return {
     ...state,
     loading: false,
-    tweets: payload,
+    tweets: payload.data,
   }
 }
 

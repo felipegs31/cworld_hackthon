@@ -26,7 +26,7 @@ export const scanInfluencersRequest = () =>
 	action(ActionTypes.SCAN_INFLUENCERS_REQUEST)
 
 export const scanInfluencersSuccess = (data: Array<ITweet>) =>
-	action(ActionTypes.SCAN_INFLUENCERS_SUCCESS)
+	action(ActionTypes.SCAN_INFLUENCERS_SUCCESS, {data})
 	
 export const scanInfluencersError = (message: string) =>
 	action(ActionTypes.SCAN_INFLUENCERS_ERROR)

@@ -48,7 +48,7 @@ export function* handleScanInfluencersRequest({ type }: {
 	  const url = pathname.replace('/company/','');
 	  const res: any = yield API.post(`${url}/analyze`)
 	  const data: Array<ITweet> = res.data
-		  yield put(scanInfluencersSuccess(data))
+	  yield put(scanInfluencersSuccess(data))
   
 	  } catch (err) {
 		  if (err instanceof Error) {

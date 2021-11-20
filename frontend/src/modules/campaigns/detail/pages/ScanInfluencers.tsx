@@ -34,12 +34,12 @@ const ScanInfluencers: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      hey
-      {tweets.map(tweet => {
+      {console.log('tweets', tweets)}
+      {/* {tweets && tweets.map(tweet => { */}
         <TwitterTweetEmbed
-          tweetId={tweet.id}
+          tweetId={'933354946111705097'}
         />
-      })}
+      {/* })} */}
 
     </div>
   )
