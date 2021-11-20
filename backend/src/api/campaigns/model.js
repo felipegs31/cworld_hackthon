@@ -7,43 +7,33 @@ const campaignsSchema = new Schema({
     type: String,
     required: true
   },
-  category: {
-    type: String,
+  budget: {
+    type: Number,
     required: true
   },
   photoUrl: {
     type: String,
   },
-  averageRate: {
-    type: Number,
-    default: 0
+  startDate: {
+    type: Date
   },
-  rates: {
-    quantityOne: {
-      type: Number,
-      default: 0
-    },
-    quantityTwo: {
-      type: Number,
-      default: 0
-    },
-    quantityThree: {
-      type: Number,
-      default: 0
-    },
-    quantityFour: {
-      type: Number,
-      default: 0
-    },
-    quantityFive: {
-      type: Number,
-      default: 0
-    }
+  endDate: {
+    type: Date
+  },
+  ageRange: {
+    type: [Number]
+  },
+  filterTags: {
+    type: [String],
+  },
+  goals: {
+    type: String
   },
   deleted: {
     type: Boolean,
     default: false
-  }
+  },
+  createdBy: { type: Schema.Types.ObjectId, ref: 'Users'}
 }, {
   timestamps: true,
   toJSON: {
@@ -53,7 +43,7 @@ const campaignsSchema = new Schema({
 })
 
 campaignsSchema.plugin(mongooseKeywords, {
-  paths: ["name", "category"]
+  paths: ["name", "filterTags"]
 });
 
 campaignsSchema.pre('save', function (next) {
@@ -77,12 +67,16 @@ campaignsSchema.methods = {
       // simple view
       id: this.id,
       name: this.name,
-      averageRate: this.averageRate,
       photoUrl: this.photoUrl,
-      rates: this.rates,
-      category: this.category,
+      budget: this.budget,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      ageRange: this.ageRange,
+      filterTags: this.filterTags,
+      goals: this.goals,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
+      createdBy: this.createdBy
     }
 
     return full ? {

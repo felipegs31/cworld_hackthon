@@ -100,8 +100,7 @@ const CampaignCard: React.FC<props> = ({ campaign }: props) => {
           <div className={classes.body}>
             <div className={classes.namesContainer}>
               <Typography title={campaign.name} className={classes.name} variant='h5' noWrap>{campaign.name}</Typography>
-              <Typography title={campaign.category} className={classes.category} noWrap>{campaign.category}</Typography>
-              <Rating name="read-only" value={campaign.averageRate} readOnly precision={0.25}/>
+              {/* <Typography title={campaign.category} className={classes.category} noWrap>{campaign.category}</Typography> */}
             </div>
           </div>
         </div>

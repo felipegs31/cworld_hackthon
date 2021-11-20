@@ -4,10 +4,10 @@ import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy, soft_delete } from './controller'
 import { schema } from './model'
-export Restaurants, { schema } from './model'
+export Campaigns, { schema } from './model'
 
 const router = new Router()
-const { name, category, photoUrl } = schema.tree
+const { name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals } = schema.tree
 
 /**
  * @api {post} /restaurants Create restaurants
@@ -24,8 +24,8 @@ const { name, category, photoUrl } = schema.tree
  * @apiError 401 admin access only.
  */
 router.post('/',
-  token({ required: true, roles: ['admin'] }),
-  body({ name, category, photoUrl }),
+  token({ required: true }),
+  body({ name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals }),
   create)
 
 /**
@@ -75,8 +75,8 @@ router.get('/:id',
  * @apiError 401 admin access only.
  */
 router.put('/:id',
-  token({ required: true, roles: ['admin'] }),
-  body({ name, category, photoUrl }),
+  token({ required: true }),
+  body({ name, photoUrl, budget, startDate, endDate, ageRange, filterTags, goals }),
   update)
 
 /**
@@ -90,7 +90,7 @@ router.put('/:id',
  * @apiError 401 admin access only.
  */
 router.delete('/:id',
-  token({ required: true, roles: ['admin'] }),
+  token({ required: true }),
   destroy)
 
 
@@ -106,7 +106,7 @@ router.delete('/:id',
  * @apiError 404 Restaurant not found.
  */
 router.put('/:id/delete',
-  token({ required: true, roles: ['admin'] }),
+  token({ required: true }),
   soft_delete)
 
 export default router

@@ -6,14 +6,19 @@ import {
   IconButton,
   TextField,
   FormControl,
+  Slider,
+  FormLabel
 } from '@material-ui/core/'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { isEmpty } from 'lodash'
 import * as actions from '../../state/actions';
 import DoneIcon from '@material-ui/icons/Done';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ICampaign, ICampaignData } from '../../models/ICampaign';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import ChipInput from 'material-ui-chip-input'
+import { isEmpty, cloneDeep } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   modalContainer: {
@@ -31,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   submitButton: {
     color: 'green'
   },
+  datePickers: {
+    display: 'flex',
+    justifyContent: 'space-around'
+  }
 }))
 
 
@@ -40,11 +49,23 @@ const CampaignModal: React.FC = () => {
 
   const [isNewData, setIsNewData] = useState(true);
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
+
+  const [budget, setBudget] = useState<number>(0);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [filterTags, setFilterTags] = useState<string[]>([])
+  const [goals, setGoals] = useState<string>('')
+
+
+  const [ageRange, setAgeRange] = useState<number[]>([18,60]);
+
 
 
   const [nameError, setNameError] = useState(false);
+  const [startDateError, setStartDateError] = useState(false);
+  const [endDateError, setEndDateError] = useState(false);
+  const [filterTagsError, setFilterTagsError] = useState(false);
 
   const campaignToEdit: ICampaign = useSelector((state: IApplicationState) => state.campaignsList.campaignToEdit)
   const campaignModalLoading: boolean = useSelector((state: IApplicationState) => state.campaignsList.campaignModalLoading)
@@ -54,13 +75,23 @@ const CampaignModal: React.FC = () => {
     if (isEmpty(campaignToEdit)) {
       setIsNewData(true)
       setName('')
-      setCategory('')
       setPhotoUrl('')
+      setBudget(0)
+      setAgeRange([18,60])
+      setStartDate(null)
+      setEndDate(null)
+      setFilterTags([])
+      setGoals('')
     } else {
       setIsNewData(false)
       setName(campaignToEdit.name)
-      setCategory(campaignToEdit.category)
       setPhotoUrl(campaignToEdit.photoUrl)
+      setBudget(campaignToEdit.budget)
+      setAgeRange(campaignToEdit.ageRange)
+      setStartDate(campaignToEdit.startDate)
+      setEndDate(campaignToEdit.endDate)
+      setFilterTags(campaignToEdit.filterTags)
+      setGoals(campaignToEdit.goals)
     }
   }, [])
 
@@ -74,14 +105,34 @@ const CampaignModal: React.FC = () => {
       setNameError(true)
     }
 
+    if (!startDate) {
+      hasError = true
+      setStartDateError(true)
+    }
+
+    if (!endDate) {
+      hasError = true
+      setEndDateError(true)
+    }
+
+    if (!filterTags || filterTags.length === 0) {
+      hasError = true
+      setFilterTagsError(true)
+    }
+
     if (hasError) {
       return
     }
 
     const body: ICampaignData = {
       name,
-      category,
-      photoUrl
+      photoUrl,
+      budget,
+      ageRange,
+      startDate,
+      endDate,
+      filterTags,
+      goals
     };
 
     if (isNewData) {
@@ -96,6 +147,27 @@ const CampaignModal: React.FC = () => {
     dispatch(actions.deleteCampaign())
   }
 
+  const handleAgeRangeChange = (event: any, newValue: number | number[]) => {
+    setAgeRange(newValue as number[]);
+  };
+
+  function ageRangeValuetext(value: number) {
+    return `${value} years`;
+  }
+
+  const handleAddChip = (chip: string) => {
+    let filterTagsClone = cloneDeep(filterTags) as string[]
+    filterTagsClone.push(chip);
+    setFilterTags(filterTagsClone)
+    setFilterTagsError(false)
+  }
+
+  const handleDeleteChip = (chip: string, index: number) => {
+    let filterTagsClone = cloneDeep(filterTags)
+    filterTagsClone.splice(index, 1);
+    setFilterTags(filterTagsClone)
+  }
+
   return (
     <form className={classes.modalContainer} onSubmit={handleSubmit}>
       <div className={classes.modalHeader}>
@@ -106,7 +178,7 @@ const CampaignModal: React.FC = () => {
 
       <FormControl fullWidth margin='normal' required>
         <TextField
-          label="Name"
+          label="Company Name"
           value={name}
           error={nameError}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,24 +187,94 @@ const CampaignModal: React.FC = () => {
           }}
         />
       </FormControl>
+
       <FormControl fullWidth margin='normal'>
         <TextField
-          label="Category"
-          value={category}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setCategory(event.target.value)
-          }}
-        />
-      </FormControl>
-      <FormControl fullWidth margin='normal'>
-        <TextField
-          label="Photo URL"
+          label="Campaign Photo URL"
           value={photoUrl}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setPhotoUrl(event.target.value)
           }}
         />
       </FormControl>
+
+      <FormControl fullWidth margin='normal' required>
+        <TextField
+          label="Budget (CELO)"
+          value={budget}
+          type="number"
+          inputProps={{
+            maxLength: 13,
+            step: "0.001"
+          }}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setBudget(Number(event.target.value))
+          }}
+        />
+      </FormControl>
+
+
+      <FormControl fullWidth margin='normal'>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <div className={classes.modalHeader}>
+            <KeyboardDatePicker
+              label='Start date'
+              value={startDate}
+              onChange={date => {
+                setStartDate(date)
+                setStartDateError(false)
+              }}
+              format="dd/MM/yyyy"
+              error={startDateError}
+            />
+            <KeyboardDatePicker
+              label='End date'
+              value={endDate}
+              onChange={date => {
+                setEndDate(date)
+                setEndDateError(false)
+              }}
+              format="dd/MM/yyyy"
+              error={endDateError}
+            />
+          </div>
+        </MuiPickersUtilsProvider>
+      </FormControl>
+
+     
+      <FormControl fullWidth margin='normal' required>
+        <FormLabel htmlFor="age-range">Age Range</FormLabel>
+        <Slider
+          id="age-range"
+          value={ageRange}
+          onChange={handleAgeRangeChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={ageRangeValuetext}
+        />
+      </FormControl>
+
+      <FormControl fullWidth>
+        <ChipInput
+          value={filterTags}
+          onAdd={(chip) => handleAddChip(chip)}
+          onDelete={(chip, index) => handleDeleteChip(chip, index)}
+          label='Filter Tags'
+          error={filterTagsError}
+        />
+      </FormControl>
+
+      <FormControl fullWidth margin='normal'>
+        <TextField
+          id="standard-multiline-flexible"
+          label="Goals"
+          multiline
+          value={goals}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setGoals(event.target.value)
+          }}
+        />
+      </FormControl>
+      
       <div className={classes.submitContainer}>
         <IconButton disabled={campaignModalLoading} type="submit"><DoneIcon className={classes.submitButton} fontSize='large'/></IconButton>
       </div>

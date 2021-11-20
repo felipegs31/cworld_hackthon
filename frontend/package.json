@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "date-fns": "^2.19.0",
     "lodash": "^4.17.21",
+    "material-ui-chip-input": "^1.1.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-redux": "7.1.0",

@@ -79,14 +79,14 @@ const CampaignActionBar: React.FC = () => {
           }}
         />
       </div>
-      {user.role === ERoles.Admin && <Button
+      <Button
         variant="contained"
         color="primary"
         endIcon={<AddCircleIcon />}
         onClick={handleOpenCampaignModal}
       >
         Add Campaign
-      </Button>}
+      </Button>
     </div>
   )
 }
