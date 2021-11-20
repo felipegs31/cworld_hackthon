@@ -1,7 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
 import authSaga from '../../modules/auth/state/sagas'
-import restaurantsListSaga from '../../modules/restaurants/list/state/sagas'
-import restaurantDetailSaga from '../../modules/restaurants/detail/state/sagas'
+import restaurantsListSaga from '../../modules/campaigns/list/state/sagas'
+import restaurantDetailSaga from '../../modules/campaigns/detail/state/sagas'
 import usersListSaga from '../../modules/users/list/state/sagas';
 
 

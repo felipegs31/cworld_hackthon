@@ -74,7 +74,7 @@ export default function Navigation() {
         <NavLink className={classes.navlink} to={"/"}>
           <ListItem button>
             <ListItemIcon><RestaurantIcon /></ListItemIcon>
-            <ListItemText primary="Restaurants" />
+            <ListItemText primary="Campaigns" />
           </ListItem>
         </NavLink>
         {user.role === ERoles.Admin && <NavLink className={classes.navlink} to={"/users"}>
