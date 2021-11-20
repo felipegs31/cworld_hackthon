@@ -20,9 +20,9 @@ export const create = async ({ bodymen: { body: { email, name, role } } }, res, 
       Please use the following link to login in your new account. It will expire in 24 hours.<br><br>
       <a href="${link}">${link}</a><br><br>
       If you dont want to join, then you can safely ignore this email. :)<br><br>
-      &mdash; foodcorner Team
+      &mdash; cworld Team
     `
-    await sendMail({ toEmail: email, subject: 'foodcorner - Invite', content })
+    await sendMail({ toEmail: email, subject: 'cworld - Invite', content })
     return res.status(204).end()
   } catch(err) {
     res.status(500).end()

@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 import mongooseKeywords from "mongoose-keywords";
 import round from '../../services/utils/round';
 
-const restaurantsSchema = new Schema({
+const campaignsSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -52,11 +52,11 @@ const restaurantsSchema = new Schema({
   }
 })
 
-restaurantsSchema.plugin(mongooseKeywords, {
+campaignsSchema.plugin(mongooseKeywords, {
   paths: ["name", "category"]
 });
 
-restaurantsSchema.pre('save', function (next) {
+campaignsSchema.pre('save', function (next) {
   if (!this.isModified('rates')) return next()
   let sumOfElements = 0
   let sumOfStars = 0
@@ -71,7 +71,7 @@ restaurantsSchema.pre('save', function (next) {
   next()
 })
 
-restaurantsSchema.methods = {
+campaignsSchema.methods = {
   view (full) {
     const view = {
       // simple view
@@ -92,7 +92,7 @@ restaurantsSchema.methods = {
   }
 }
 
-const model = mongoose.model('Restaurants', restaurantsSchema)
+const model = mongoose.model('Campaigns', campaignsSchema)
 
 export const schema = model.schema
 export default model

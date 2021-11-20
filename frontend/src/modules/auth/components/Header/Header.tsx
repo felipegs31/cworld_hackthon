@@ -66,7 +66,7 @@ const Header: React.FC = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap>
-          Food Corner
+          CWorld
         </Typography>
         <UserInfo />
       </Toolbar>

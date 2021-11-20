@@ -13,13 +13,13 @@ export const create = ({ bodymen: { body: { email } } }, res, next) =>
       const link = `${process.env.API_URL}/resetpassword/${token}`
       const content = `
         Hey, ${user.name}.<br><br>
-        You requested a new password for your foodcorner account.<br>
+        You requested a new password for your cworld account.<br>
         Please use the following link to set a new password. It will expire in 1 hour.<br><br>
         <a href="${link}">${link}</a><br><br>
         If you didn't make this request then you can safely ignore this email. :)<br><br>
-        &mdash; foodcorner Team
+        &mdash; cworld Team
       `
-      return sendMail({ toEmail: email, subject: 'foodcorner - Password Reset', content })
+      return sendMail({ toEmail: email, subject: 'cworld - Password Reset', content })
     })
     .then(([response]) => response ? res.status(response.statusCode).end() : null)
     .catch(next)

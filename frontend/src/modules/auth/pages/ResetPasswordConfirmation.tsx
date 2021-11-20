@@ -89,7 +89,7 @@ const ResetPasswordConfirmation: React.FC = () => {
         {(!getResetPasswordError && !putResetPasswordSuccess) && (
           <div className={classes.paper}>
             <Typography variant="h2" gutterBottom>
-              Food Corner
+              CWorld
             </Typography>
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <Grid container spacing={2}>

@@ -93,7 +93,7 @@ const InviteUser: React.FC = () => {
         {(!getInviteUserError && !isEmpty(inviteUser)) && (
           <div className={classes.paper}>
             <Typography variant="h2" gutterBottom>
-              Food Corner
+              CWorld
             </Typography>
             <Typography variant="h5" gutterBottom>
               Hello, { inviteUser.name }, to create your account, type your password

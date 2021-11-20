@@ -92,7 +92,7 @@ const Login: React.FC = () => {
         <CssBaseline />
         <div className={classes.paper}>
           <Typography variant="h2" gutterBottom>
-            Food Corner
+            CWorld
           </Typography>
           <form className={classes.form} noValidate>
             {loading && <div className={classes.overlay}></div>}

@@ -94,7 +94,7 @@ const CreateAccount: React.FC = () => {
         {!resetPasswordSent && (
           <div className={classes.paper}>
             <Typography variant="h2" gutterBottom>
-              Food Corner
+              CWorld
             </Typography>
             <Typography variant="h5" gutterBottom>
               Create New Account
