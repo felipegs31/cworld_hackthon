@@ -4,6 +4,7 @@ import { IRatesPercent } from '../models/IRatesPercent';
 import { ICampaign } from '../models/ICampaign';
 import { ITweet } from './../models/ITweet'
 import { ECampaignTabs } from '../models/ECampaignTabs';
+import { IReward } from '../models/IReward';
 
 /**
  * Action types
@@ -35,7 +36,7 @@ export interface ICampaignDetailState {
   readonly campaign: ICampaign
   readonly positiveTweets: number
   readonly tweets: Array<ITweet>
-  readonly rewards: any
+  readonly rewards:  IPayload<Array<IReward>>
 
   readonly tab: ECampaignTabs,
 }

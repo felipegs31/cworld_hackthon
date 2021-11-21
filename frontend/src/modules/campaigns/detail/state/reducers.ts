@@ -9,6 +9,7 @@ import { isEmpty } from 'lodash';
 import { ICampaign } from '../models/ICampaign';
 import { ITweet } from '../models/ITweet';
 import { ECampaignTabs } from '../models/ECampaignTabs';
+import { IReward } from '../models/IReward';
 
 export const INITIAL_STATE: ICampaignDetailState = {
 	campaignLoading: false,
@@ -20,7 +21,7 @@ export const INITIAL_STATE: ICampaignDetailState = {
   campaign: {} as ICampaign,
   tweets: [] as ITweet[],
   positiveTweets: 0,
-  rewards: '',
+  rewards: {} as IPayload<IReward[]>,
 
   tab: ECampaignTabs.CAMPAIGNDETAILS
 }
@@ -100,7 +101,7 @@ const selectedInfluencersRequest = (state: ICampaignDetailState) :ICampaignDetai
 
 const selectedInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
   type: string,
-  payload: {data: Array<ITweet>}
+  payload: {data: IPayload<IReward[]>}
 } ): ICampaignDetailState => {
 
   return {

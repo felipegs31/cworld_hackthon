@@ -2,13 +2,23 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import {
-  Dialog
-} from '@material-ui/core/'
+  Container,
+  Button,
+  CssBaseline,
+  Grid,
+  Typography,
+  CircularProgress,
+  AppBar,
+  TextField
+} from '@material-ui/core';
 import * as actions from '../state/actions';
 import { useDispatch, useSelector } from 'react-redux'
 import { ICampaign, ICampaignData } from '../../../campaigns/list/models/ICampaign';
 import { ITweet } from '../models/ITweet';
 import TweetEmbed from 'react-tweet-embed'
+import { IReward } from '../models/IReward';
+import { IPayload } from '../../../../utils/models/IPayload';
+import { isEmpty } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,27 +26,30 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     justifyContent: 'center'
   },
-  positive: {
-    border: '1px solid #00ff00',
-    maxWidth: 550,
-    marginBottom: 10
+  tweetContainer: {
+    position: 'relative'
   },
-  negative: {
-    border: '1px solid #ff0000',
-    maxWidth: 550,
-    marginBottom: 10
+  claimBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    padding: 10,
+    borderRadius: 30,
+    color: "#fff"
   },
-  positiveLabel: {
-    fontSize: '2rem',
-    textAlign: 'center',
-    width: '100%'
+  claimed: {
+    backgroundColor: "#59a1f4",
+  },
+  notClaimed: {
+    backgroundColor: "#727472",
   }
+  
 }))
 
 const SelectedInfluencers: React.FC = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const rewards: Array<ITweet> = useSelector((state: IApplicationState) => state.campaignDetail.rewards)
+  const rewards: IPayload<IReward[]> = useSelector((state: IApplicationState) => state.campaignDetail.rewards)
 
   const selectedInfluencersRequest = () => {
     dispatch(actions.selectedInfluencersRequest())
@@ -51,7 +64,15 @@ const SelectedInfluencers: React.FC = () => {
     <div className={classes.root}>
       hey
       {console.log('rewards', rewards)}
-
+      <Grid container spacing={2}>
+        {!isEmpty(rewards) && rewards.rows.map((value) => (
+          <Grid item xs={6} className={`${classes.tweetContainer}`}>
+            {value.claimed &&  <div className={`${classes.claimBadge} ${classes.claimed}`}>Claimed Value</div>}
+            {!value.claimed &&  <div className={`${classes.claimBadge} ${classes.notClaimed}`}>Not Claimed</div>}
+            <TweetEmbed id={value.tweetId} options={{cards: 'hidden' }} key={value.tweetId}/>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   )
 }

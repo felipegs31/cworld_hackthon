@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ICampaign, ICampaignData } from '../../../campaigns/list/models/ICampaign';
 import { ITweet } from '../models/ITweet';
 import TweetEmbed from 'react-tweet-embed'
+import CancelIcon from '@material-ui/icons/Cancel';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,20 +18,29 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     justifyContent: 'center'
   },
-  positive: {
-    border: '1px solid #00ff00',
-    maxWidth: 550,
-    marginBottom: 10
-  },
-  negative: {
-    border: '1px solid #ff0000',
-    maxWidth: 550,
-    marginBottom: 10
-  },
   positiveLabel: {
     fontSize: '2rem',
     textAlign: 'center',
     width: '100%'
+  },
+  tweetContainer: {
+    display: 'flex',
+    justifyContent: 'space-around'
+  },
+  tweetEmbed: {
+    position: 'relative'
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    right: -10,
+    fontSize: '2rem'
+  },
+  cancelIcon: {
+    color: "#f45959"
+  },
+  checkIcon: {
+    color: "#008000"
   }
 }))
 
@@ -39,14 +50,11 @@ const ScanInfluencers: React.FC = () => {
   const tweets: Array<ITweet> = useSelector((state: IApplicationState) => state.campaignDetail.tweets)
   const positiveTweets: number = useSelector((state: IApplicationState) => state.campaignDetail.positiveTweets)
 
-  const selectedTab = useSelector((state: IApplicationState) => state.campaignDetail.tab)
-
   const scanInfluencersRequest = () => {
     dispatch(actions.scanInfluencersRequest())
   }
 
   useEffect(() => {
-    console.log('HELLO')
     scanInfluencersRequest()
   }, [])
 
@@ -55,8 +63,15 @@ const ScanInfluencers: React.FC = () => {
       {console.log('tweets', tweets)}
       <div className={classes.positiveLabel}>Positive: {positiveTweets}/10</div>
       {tweets && tweets.map(tweet => 
-        <div className={tweet.sentiment.SentimentScore.Positive > 0.90 ? classes.positive : classes.negative}>
-          <TweetEmbed id={tweet.id} options={{cards: 'hidden' }} key={tweet.id}/>
+        <div className={classes.tweetContainer}>
+          <div className={classes.tweetEmbed}>
+            {tweet.sentiment.SentimentScore.Positive <= 0.90 && <CancelIcon className={`${classes.icon} ${classes.cancelIcon}`}/>}
+            {tweet.sentiment.SentimentScore.Positive > 0.90 && <CheckCircleIcon className={`${classes.icon} ${classes.checkIcon}`}/>}
+            <TweetEmbed id={tweet.id} options={{cards: 'hidden' }} key={tweet.id}/>
+          </div>
+          <div>
+            PUT GAUGE HERE
+          </div>
         </div>
       )}
 
