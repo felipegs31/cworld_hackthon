@@ -193,7 +193,7 @@ const CampaignModal: React.FC = () => {
     <form className={classes.modalContainer} onSubmit={handleSubmit}>
       <div className={classes.modalHeader}>
         <Typography variant='h6'>{isNewData ? 'New Campaign' : 'Edit Campaign'}</Typography>
-        <IconButton disabled={campaignModalLoading} onClick={() => handleDeleteCampaign()}><DeleteIcon /></IconButton>
+        {/* <IconButton disabled={campaignModalLoading} onClick={() => handleDeleteCampaign()}><DeleteIcon /></IconButton> */}
       </div>
 
 
@@ -221,7 +221,7 @@ const CampaignModal: React.FC = () => {
 
       <FormControl fullWidth margin='normal' required>
         <TextField
-          label="Budget (CELO)"
+          label="Budget (CELO DOLLAR)"
           value={budget}
           type="number"
           inputProps={{

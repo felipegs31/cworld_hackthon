@@ -19,6 +19,7 @@ import TabNavigator from '../components/tab';
 import { ECampaignTabs } from '../models/ECampaignTabs';
 import ScanInfluencers from './ScanInfluencers';
 import SelectedInfluencers from './SelectedInfluencers';
+import Detail from './Detail';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,12 +44,7 @@ const CampaignDetail: React.FC = () => {
     dispatch(actions.setTabCampaign(newTab))
   }
 
-  const campaignDetailRequest = () => {
-    dispatch(actions.campaignDetailRequest())
-  }
-  useEffect(() => {
-    campaignDetailRequest()
-  }, [])
+ 
 
   return (
     <div className={classes.root}>
@@ -56,8 +52,8 @@ const CampaignDetail: React.FC = () => {
       <Paper className={classes.root}>
         <TabNavigator selectedTab={selectedTab} hadleSelectTab={hadleSelectTab} />
       
-        {selectedTab === ECampaignTabs.CAMPAIGNDETAILS 
-
+        {selectedTab === ECampaignTabs.CAMPAIGNDETAILS &&
+          <Detail />
         }
 
         {selectedTab === ECampaignTabs.SCANINFLUENCERS &&
