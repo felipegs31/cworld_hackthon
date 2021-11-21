@@ -63,15 +63,18 @@ const ScanInfluencers: React.FC = () => {
   return (
     <div className={classes.root}>
       <div className={classes.positiveLabel}>Positive: {positiveTweets}/10</div>
-      {tweets && tweets.map(tweet => 
+      {tweets && tweets.map(tweet =>
         <div className={classes.tweetContainer}>
           <div className={classes.tweetEmbed}>
-            {tweet.sentiment.SentimentScore.Positive <= 0.90 && <CancelIcon className={`${classes.icon} ${classes.cancelIcon}`}/>}
-            {tweet.sentiment.SentimentScore.Positive > 0.90 && <CheckCircleIcon className={`${classes.icon} ${classes.checkIcon}`}/>}
-            <TweetEmbed id={tweet.id} options={{cards: 'hidden' }} key={tweet.id}/>
+            {tweet.sentiment.SentimentScore.Positive <= 0.90 && <CancelIcon className={`${classes.icon} ${classes.cancelIcon}`} />}
+            {tweet.sentiment.SentimentScore.Positive > 0.90 && <CheckCircleIcon className={`${classes.icon} ${classes.checkIcon}`} />}
+            <TweetEmbed id={tweet.id} options={{ cards: 'hidden' }} key={tweet.id} />
+            {/* <blockquote className="twitter-tweet" key={tweet.id}>
+              <a href={`https://twitter.com/${tweet.username}/status/${tweet.id}`}></a>
+            </blockquote> */}
           </div>
           <div>
-            <ReactSpeedometer currentValueText={`${String((tweet.sentiment.SentimentScore.Positive*100).toFixed(2))}%`} value={tweet.sentiment.SentimentScore.Positive} minValue={0} maxValue={1} segments={3} />
+            <ReactSpeedometer currentValueText={`${String((tweet.sentiment.SentimentScore.Positive * 100).toFixed(2))}%`} value={tweet.sentiment.SentimentScore.Positive} minValue={0} maxValue={1} segments={3} />
           </div>
         </div>
       )}
