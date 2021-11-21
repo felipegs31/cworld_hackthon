@@ -57,7 +57,13 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
 export const claimReward = ({ params, user }, res, next) =>
   Rewards.findOne({ _id: params.id, influencerTwitterId: user.twitterId, claimed: false })
     .then(notFound(res))
-    .then((reward) => reward ? Object.assign(reward, { claimed: true }).save() : null)
+    .then(async (reward) => {
+      if (reward) {
+        //DO WALLET TRANSFER TO USER.
+        return Object.assign(reward, { claimed: true }).save()
+      }
+      return null
+    })
     .then(success(res))
     .catch(next)
 
