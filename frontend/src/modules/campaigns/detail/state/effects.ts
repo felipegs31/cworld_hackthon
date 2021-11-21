@@ -6,7 +6,9 @@ import API from '../../../../services/api'
 import { campaignDetailSuccess,
         campaignDetailError,
 		scanInfluencersSuccess,
-		scanInfluencersError
+		scanInfluencersError,
+		selectedInfluencersSuccess,
+		selectedInfluencersError
       } from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import { ICampaign } from '../models/ICampaign';
@@ -52,6 +54,26 @@ export function* handleScanInfluencersRequest({ type }: {
 			  yield put(scanInfluencersError(err.stack!))
 		  } else {
 			  yield put(scanInfluencersError('An unknown error occured.'))
+		  }
+	  }
+  }
+  
+  export function* handleSelectedInfluencersRequest({ type }: {
+	type: string,
+  }): Generator{
+	  try {
+	  const { pathname } = History.location
+  
+	  const url = pathname.replace('/company/','');
+	  const res: any = yield API.get(`${url}/rewards`)
+	  const data: Array<ITweet> = res.data
+	  yield put(selectedInfluencersSuccess(data))
+  
+	  } catch (err) {
+		  if (err instanceof Error) {
+			  yield put(selectedInfluencersError(err.stack!))
+		  } else {
+			  yield put(selectedInfluencersError('An unknown error occured.'))
 		  }
 	  }
   }

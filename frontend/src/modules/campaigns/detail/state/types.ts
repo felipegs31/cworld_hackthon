@@ -17,16 +17,25 @@ export enum ActionTypes {
   SCAN_INFLUENCERS_REQUEST = '@campaign_detail/SCAN_INFLUENCERS_REQUEST',
   SCAN_INFLUENCERS_SUCCESS = '@campaign_detail/SCAN_INFLUENCERS_SUCCESS',
   SCAN_INFLUENCERS_ERROR = '@campaign_detail/SCAN_INFLUENCERS_ERROR',
+
+  SELECTED_INFLUENCERS_REQUEST = '@campaign_detail/SELECTED_INFLUENCERS_REQUEST',
+  SELECTED_INFLUENCERS_SUCCESS = '@campaign_detail/SELECTED_INFLUENCERS_SUCCESS',
+  SELECTED_INFLUENCERS_ERROR = '@campaign_detail/SELECTED_INFLUENCERS_ERROR',
 }
 
 /**
  * State type
  */
 export interface ICampaignDetailState {
-  readonly loading: boolean
+  readonly campaignLoading: boolean
+  readonly tweetsLoading: boolean
+  readonly rewardsLoading: boolean
+
   readonly error: boolean
   readonly campaign: ICampaign
   readonly positiveTweets: number
   readonly tweets: Array<ITweet>
+  readonly rewards: any
+
   readonly tab: ECampaignTabs,
 }

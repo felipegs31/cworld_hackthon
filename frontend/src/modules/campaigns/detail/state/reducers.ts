@@ -11,19 +11,26 @@ import { ITweet } from '../models/ITweet';
 import { ECampaignTabs } from '../models/ECampaignTabs';
 
 export const INITIAL_STATE: ICampaignDetailState = {
-	loading: false,
+	campaignLoading: false,
+	tweetsLoading: false,
+	rewardsLoading: false,
+
+
   error: false,
   campaign: {} as ICampaign,
   tweets: [] as ITweet[],
   positiveTweets: 0,
+  rewards: '',
+
   tab: ECampaignTabs.CAMPAIGNDETAILS
 }
 
+// CAMPAIGN
 
 const campaignDetailRequest = (state: ICampaignDetailState) :ICampaignDetailState => {
   return {
     ...state,
-    loading: true,
+    campaignLoading: true,
     error: false
   }
 }
@@ -35,7 +42,7 @@ const campaignDetailSuccess = (state: ICampaignDetailState, {type, payload}: {
 
   return {
     ...state,
-    loading: false,
+    campaignLoading: false,
     campaign: payload,
   }
 }
@@ -43,15 +50,17 @@ const campaignDetailSuccess = (state: ICampaignDetailState, {type, payload}: {
 const campaignDetailError = (state: ICampaignDetailState): ICampaignDetailState => {
   return {
     ...state,
-    loading: false,
+    campaignLoading: false,
     error: true
   }
 }
 
+// SCAN INFLUENCERS
+
 const scanInfluencersRequest = (state: ICampaignDetailState) :ICampaignDetailState => {
   return {
     ...state,
-    loading: true,
+    tweetsLoading: true,
     error: false
   }
 }
@@ -65,7 +74,7 @@ const scanInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
 
   return {
     ...state,
-    loading: false,
+    rewardsLoading: false,
     tweets: payload.data,
     positiveTweets: positive.length
   }
@@ -74,7 +83,37 @@ const scanInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
 const scanInfluencersError = (state: ICampaignDetailState): ICampaignDetailState => {
   return {
     ...state,
-    loading: false,
+    tweetsLoading: false,
+    error: true
+  }
+}
+
+// SELECTED INFLUENCERS
+
+const selectedInfluencersRequest = (state: ICampaignDetailState) :ICampaignDetailState => {
+  return {
+    ...state,
+    rewardsLoading: true,
+    error: false
+  }
+}
+
+const selectedInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
+  type: string,
+  payload: {data: Array<ITweet>}
+} ): ICampaignDetailState => {
+
+  return {
+    ...state,
+    rewardsLoading: false,
+    rewards: payload.data,
+  }
+}
+
+const selectedInfluencersError = (state: ICampaignDetailState): ICampaignDetailState => {
+  return {
+    ...state,
+    rewardsLoading: false,
     error: true
   }
 }
@@ -99,6 +138,10 @@ export const campaignDetailReducer: Reducer<ICampaignDetailState> = (
     case ActionTypes.SCAN_INFLUENCERS_REQUEST: return scanInfluencersRequest(state)
 		case ActionTypes.SCAN_INFLUENCERS_SUCCESS: return scanInfluencersSuccess(state, action)
 		case ActionTypes.SCAN_INFLUENCERS_ERROR: return scanInfluencersError(state)
+
+    case ActionTypes.SELECTED_INFLUENCERS_REQUEST: return selectedInfluencersRequest(state)
+		case ActionTypes.SELECTED_INFLUENCERS_SUCCESS: return selectedInfluencersSuccess(state, action)
+		case ActionTypes.SELECTED_INFLUENCERS_ERROR: return selectedInfluencersError(state)
 
     case ActionTypes.SET_TAB_CAMPAIGN: return setTabCampaign(state, action)
 

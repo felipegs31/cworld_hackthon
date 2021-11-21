@@ -31,3 +31,14 @@ export const scanInfluencersSuccess = (data: Array<ITweet>) =>
 export const scanInfluencersError = (message: string) =>
 	action(ActionTypes.SCAN_INFLUENCERS_ERROR)
 
+
+
+export const selectedInfluencersRequest = () =>
+	action(ActionTypes.SELECTED_INFLUENCERS_REQUEST)
+
+export const selectedInfluencersSuccess = (data: Array<ITweet>) =>
+	action(ActionTypes.SELECTED_INFLUENCERS_SUCCESS, {data})
+	
+export const selectedInfluencersError = (message: string) =>
+	action(ActionTypes.SELECTED_INFLUENCERS_ERROR)
+

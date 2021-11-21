@@ -1,6 +1,6 @@
 import { ActionTypes } from './types'
 import { all, fork, takeLatest } from 'redux-saga/effects'
-import { handleCampaignDetailRequest, handleScanInfluencersRequest } from './effects'
+import { handleCampaignDetailRequest, handleScanInfluencersRequest, handleSelectedInfluencersRequest } from './effects'
 
 
 /**
@@ -9,6 +9,8 @@ import { handleCampaignDetailRequest, handleScanInfluencersRequest } from './eff
 function* watchCampaignDetail(): Generator {
   yield takeLatest([ActionTypes.CAMPAIGN_DETAIL_REQUEST], handleCampaignDetailRequest)
   yield takeLatest([ActionTypes.SCAN_INFLUENCERS_REQUEST], handleScanInfluencersRequest)
+  yield takeLatest([ActionTypes.SELECTED_INFLUENCERS_REQUEST], handleSelectedInfluencersRequest)
+
   
 }
 

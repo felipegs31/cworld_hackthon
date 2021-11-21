@@ -18,6 +18,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import TabNavigator from '../components/tab';
 import { ECampaignTabs } from '../models/ECampaignTabs';
 import ScanInfluencers from './ScanInfluencers';
+import SelectedInfluencers from './SelectedInfluencers';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,6 +62,10 @@ const CampaignDetail: React.FC = () => {
 
         {selectedTab === ECampaignTabs.SCANINFLUENCERS &&
           <ScanInfluencers />
+        }
+
+        {selectedTab === ECampaignTabs.SELECTEDINFLUENCERS &&
+          <SelectedInfluencers />
         }
       </Paper>
 
