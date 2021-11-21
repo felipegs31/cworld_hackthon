@@ -56,20 +56,17 @@ const SelectedInfluencers: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log('HELLO')
     selectedInfluencersRequest()
   }, [])
 
   return (
     <div className={classes.root}>
-      hey
-      {console.log('rewards', rewards)}
       <Grid container spacing={2}>
         {!isEmpty(rewards) && rewards.rows.map((value) => (
-          <Grid item xs={6} className={`${classes.tweetContainer}`}>
+          <Grid item xs={6} className={`${classes.tweetContainer}`} key={value.tweetId}>
             {value.claimed &&  <div className={`${classes.claimBadge} ${classes.claimed}`}>Claimed Value</div>}
             {!value.claimed &&  <div className={`${classes.claimBadge} ${classes.notClaimed}`}>Not Claimed</div>}
-            <TweetEmbed id={value.tweetId} options={{cards: 'hidden' }} key={value.tweetId}/>
+            <TweetEmbed id={value.tweetId} options={{cards: 'hidden' }} />
           </Grid>
         ))}
       </Grid>

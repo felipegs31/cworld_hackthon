@@ -44,8 +44,6 @@ const CampaignDetail: React.FC = () => {
     dispatch(actions.setTabCampaign(newTab))
   }
 
- 
-
   return (
     <div className={classes.root}>
 

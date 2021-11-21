@@ -11,6 +11,7 @@ import { ITweet } from '../models/ITweet';
 import TweetEmbed from 'react-tweet-embed'
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ReactSpeedometer from "react-d3-speedometer"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,7 +22,8 @@ const useStyles = makeStyles(theme => ({
   positiveLabel: {
     fontSize: '2rem',
     textAlign: 'center',
-    width: '100%'
+    width: '100%',
+    marginBottom: 20
   },
   tweetContainer: {
     display: 'flex',
@@ -60,7 +62,6 @@ const ScanInfluencers: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      {console.log('tweets', tweets)}
       <div className={classes.positiveLabel}>Positive: {positiveTweets}/10</div>
       {tweets && tweets.map(tweet => 
         <div className={classes.tweetContainer}>
@@ -70,7 +71,7 @@ const ScanInfluencers: React.FC = () => {
             <TweetEmbed id={tweet.id} options={{cards: 'hidden' }} key={tweet.id}/>
           </div>
           <div>
-            PUT GAUGE HERE
+            <ReactSpeedometer value={tweet.sentiment.SentimentScore.Positive} minValue={0} maxValue={1} segments={3} />
           </div>
         </div>
       )}
