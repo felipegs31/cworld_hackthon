@@ -71,7 +71,7 @@ const ScanInfluencers: React.FC = () => {
             <TweetEmbed id={tweet.id} options={{cards: 'hidden' }} key={tweet.id}/>
           </div>
           <div>
-            <ReactSpeedometer value={tweet.sentiment.SentimentScore.Positive} minValue={0} maxValue={1} segments={3} />
+            <ReactSpeedometer currentValueText={`${String((tweet.sentiment.SentimentScore.Positive*100).toFixed(2))}%`} value={tweet.sentiment.SentimentScore.Positive} minValue={0} maxValue={1} segments={3} />
           </div>
         </div>
       )}

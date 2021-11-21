@@ -3,6 +3,7 @@ import user from './user'
 import auth from './auth'
 import passwordReset from './password-reset'
 import campaigns from './campaigns'
+import rewards from './rewards'
 import inviteUser from './invite-user'
 
 const router = new Router()
@@ -34,6 +35,7 @@ router.use('/users', user)
 router.use('/auth', auth)
 router.use('/passwordresets', passwordReset)
 router.use('/campaigns', campaigns)
+router.use('/rewards', rewards)
 router.use('/inviteuser', inviteUser)
 
 

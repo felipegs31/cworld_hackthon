@@ -3,7 +3,7 @@ import { env, mongo, port, ip, apiRoot } from './config'
 import mongoose from './services/mongoose'
 import express from './services/express'
 import api from './api'
-
+import { publishTweet } from './api/rewards/controller'
 const app = express(apiRoot, api)
 const server = http.createServer(app)
 

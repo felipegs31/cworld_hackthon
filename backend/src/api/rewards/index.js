@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
-import { index, show } from './controller'
+import { index, claimReward, show } from './controller'
 import { schema } from './model'
 export Rewards, { schema } from './model'
 
@@ -39,5 +39,9 @@ router.get('/',
 router.get('/:id',
   token({ required: true }),
   show)
+
+router.post('/:id/claim',
+  token({ required: true }),
+  claimReward)
 
 export default router

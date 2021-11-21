@@ -2,15 +2,23 @@ import rp from 'request-promise'
 import AWS from 'aws-sdk'
 
 export const fetchTwitter = async (campaign) => {
-  const data = await rp({
+  const response = await rp({
     method: 'GET',
-    uri: `https://api.twitter.com/2/tweets/search/recent?tweet.fields=lang,created_at&expansions=author_id&query=${campaign.queryText} lang:pt`,
+    uri: `https://api.twitter.com/2/tweets/search/recent?tweet.fields=lang,created_at&expansions=author_id&user.fields=name,username&query=${campaign.queryText} lang:pt`,
     headers: {
       'Authorization': `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
     },
     json: true
   })
-  return data
+  const data = response.data.map((item, index) => {
+    return {
+      ...item,
+      ...response.includes.users[index]
+    }
+  })
+  return {
+    data
+  }
 }
 
 export const detectSentiment = async (tweets) => {
