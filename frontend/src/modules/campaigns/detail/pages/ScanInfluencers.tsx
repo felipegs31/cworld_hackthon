@@ -13,7 +13,8 @@ import TweetEmbed from 'react-tweet-embed'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    justifyContent: 'center'
   }
 }))
 
@@ -35,13 +36,11 @@ const ScanInfluencers: React.FC = () => {
   return (
     <div className={classes.root}>
       {console.log('tweets', tweets)}
-      {/* {tweets && tweets.map(tweet => { */}
-      <div>
-        <TweetEmbed id='771763270273294336' options={{ theme: 'dark' }} />
-
-      </div>
-
-      {/* })} */}
+      {tweets && tweets.map(tweet => 
+        <div>
+          <TweetEmbed id={tweet.id} options={{ theme: 'light' }} key={tweet.id}/>
+        </div>
+      )}
 
     </div>
   )
