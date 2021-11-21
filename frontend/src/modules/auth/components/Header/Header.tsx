@@ -56,15 +56,6 @@ const Header: React.FC = () => {
       })}
     >
       <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleToggleDrawer}
-          edge="start"
-          className={clsx(classes.menuButton, drawerOpen && classes.hide)}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography variant="h6" noWrap>
           CWorld
         </Typography>
