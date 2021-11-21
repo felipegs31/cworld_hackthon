@@ -1,4 +1,6 @@
 import { ActionTypes } from './types'
+import { ActionTypes as ActionTypesCreators} from './../../creators/list/state/types'
+
 import { all, fork, takeLatest } from 'redux-saga/effects'
 import { handleGetMe,
          handleLogin,
@@ -16,7 +18,7 @@ import { handleGetMe,
  */
 function* watchAuth(): Generator {
   yield takeLatest(ActionTypes.LOGIN_REQUEST, handleLogin)
-	yield takeLatest(ActionTypes.GET_ME, handleGetMe)
+	yield takeLatest([ActionTypes.GET_ME, ActionTypesCreators.ADD_KEY_USER_SUCCESS], handleGetMe)
 	yield takeLatest(ActionTypes.LOGOUT, handleLogout)
 }
 

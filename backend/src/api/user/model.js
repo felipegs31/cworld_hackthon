@@ -38,6 +38,10 @@ const userSchema = new Schema({
     type: String,
     trim: true
   },
+  walletAddress: {
+    type: String,
+    trim: true
+  },
   deleted: {
     type: Boolean,
     default: false
@@ -74,7 +78,7 @@ userSchema.pre('save', function (next) {
 userSchema.methods = {
   view (full) {
     const view = {}
-    let fields = ['id', 'name', 'picture', 'role', 'email', 'createdAt', 'twitterId']
+    let fields = ['id', 'name', 'picture', 'role', 'email', 'createdAt', 'twitterId', 'walletAddress']
 
     if (full) {
       fields = [...fields]

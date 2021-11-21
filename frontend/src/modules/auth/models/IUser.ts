@@ -7,5 +7,6 @@ export interface IUser {
   name: string
   role: ERoles
   twitterId?: string
+  walletAddress?: string
 }
 

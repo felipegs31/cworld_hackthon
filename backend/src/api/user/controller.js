@@ -112,3 +112,14 @@ export const soft_delete = ({ params }, res, next) =>
     .then((user) => user ? user.view(true) : null)
     .then(success(res))
     .catch(next)
+
+
+export const update_addkeys = ({ bodymen: { body }, params, user }, res, next) => {
+  console.log('body', body)
+  User.findById(user.id)
+    .then(notFound(res))
+    .then((user) => user ? Object.assign(user, body).save() : null)
+    .then((user) => user ? user.view(true) : null)
+    .then(success(res))
+    .catch(next)
+}

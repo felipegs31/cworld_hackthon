@@ -1,6 +1,6 @@
 import { ActionTypes } from './types'
 import { all, fork, takeLatest } from 'redux-saga/effects'
-import { handleRewardsListRequest } from './effects'
+import { handleRewardsListRequest, handleAddKeyRequest } from './effects'
 
 
 /**
@@ -10,6 +10,10 @@ function* watchRewardsList(): Generator {
   yield takeLatest([ActionTypes.REWARDS_LIST_REQUEST], handleRewardsListRequest)
 }
 
+function* watchAddKey(): Generator {
+	yield takeLatest([ActionTypes.ADD_KEY_USER_REQUEST], handleAddKeyRequest)
+  }
+
 
 /**
  * @desc saga init, forks in effects, other sagas
@@ -17,5 +21,6 @@ function* watchRewardsList(): Generator {
 export default function* creatorsListSaga() {
 	yield all([
 		fork(watchRewardsList),
+		fork(watchAddKey),
 	])
 }

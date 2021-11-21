@@ -2,12 +2,12 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, rewards, showMe, show, create, update, updatePassword, destroy, soft_delete } from './controller'
+import { index, rewards, showMe, show, create, update, updatePassword, destroy, soft_delete, update_addkeys } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
 const router = new Router()
-const { email, password, name, picture, role } = schema.tree
+const { email, password, name, picture, role, twitterId, walletAddress} = schema.tree
 
 /**
  * @api {get} /users Retrieve users
@@ -81,6 +81,26 @@ router.get('/:id',
 router.post('/',
   body({ email, password, name }),
   create)
+
+
+/**
+ * @api {put} /users/:id Update user
+ * @apiName UpdateUser
+ * @apiGroup User
+ * @apiPermission user
+ * @apiParam {String} access_token User access_token.
+ * @apiParam {String} [name] User's name.
+ * @apiParam {String} [picture] User's picture.
+ * @apiSuccess {Object} user User's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Current user or admin access only.
+ * @apiError 404 User not found.
+ */
+ router.put('/addkeys',
+ token({ required: true }),
+ body({ twitterId, walletAddress }),
+ update_addkeys)
+
 
 /**
  * @api {put} /users/:id Update user

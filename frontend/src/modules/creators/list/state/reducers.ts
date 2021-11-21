@@ -1,26 +1,16 @@
 import { IPayload } from '../../../../utils/models/IPayload';
 import { Reducer } from 'redux';
 import { ActionTypes, ICreatorsListState } from './types'
-import { ICampaign } from '../models/ICampaign';
+import { IReward } from '../models/IReward';
 import { isEmpty } from 'lodash';
 
 export const INITIAL_STATE: ICreatorsListState = {
 	loading: false,
   error: false,
-  campaign: {} as ICampaign,
   rewards: {
     count: 0,
     rows: []
-  } as IPayload<ICampaign[]>,
-  page: 1,
-  sort: 'averageRate',
-  limit: 6,
-  searchText: '',
-  sortAsc: false,
-
-  campaignModalOpen: false,
-  campaignModalLoading: false,
-  campaignToEdit: {} as ICampaign
+  } as IPayload<IReward[]>,
 }
 
 const rewardsListRequest = (state: ICreatorsListState) :ICreatorsListState => {
@@ -32,7 +22,7 @@ const rewardsListRequest = (state: ICreatorsListState) :ICreatorsListState => {
 
 const rewardsListSuccess = (state: ICreatorsListState, {type, payload}: {
   type: string,
-  payload: IPayload<ICampaign[]>
+  payload: IPayload<IReward[]>
 } ): ICreatorsListState => {
   return {
     ...state,
