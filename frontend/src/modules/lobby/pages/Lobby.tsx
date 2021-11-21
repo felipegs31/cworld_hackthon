@@ -38,7 +38,7 @@ const Lobby: React.FC = (props) => {
 
   const hadleSelectCard = (type: string) => {
       if (type === 'Creators') {
-
+        history.push('/creators');
       } else if (type === 'Companies') {
         history.push('/company/campaigns');
       }

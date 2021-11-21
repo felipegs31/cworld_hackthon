@@ -11,12 +11,15 @@ import { campaignDetailReducer } from '../../modules/campaigns/detail/state/redu
 import { usersListReducer } from './../../modules/users/list/state/reducers'
 import {reducer as toastrReducer} from 'react-redux-toastr'
 import { ActionTypes } from './../../modules/auth/state/types'
+import { creatorsListReducer } from '../../modules/creators/list/state/reducers'
+import { ICreatorsListState } from '../../modules/creators/list/state/types'
 export interface IApplicationState {
 	auth: IAuthState,
 	campaignsList: ICampaignsListState,
 	campaignDetail: ICampaignDetailState,
   usersList: IUsersListState,
-  toastr: any
+  toastr: any,
+  creatorsList: ICreatorsListState
 }
 
 const appReducer = combineReducers<IApplicationState>({
@@ -24,7 +27,8 @@ const appReducer = combineReducers<IApplicationState>({
   campaignsList: campaignsListReducer,
   campaignDetail: campaignDetailReducer,
   usersList: usersListReducer,
-  toastr: toastrReducer
+  toastr: toastrReducer,
+  creatorsList: creatorsListReducer,
 });
 
 const rootReducer = (state: any, action: any) => {
