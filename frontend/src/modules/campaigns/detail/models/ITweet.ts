@@ -5,6 +5,8 @@ export interface ITweet {
   lang: string,
   id: string,
   sentiment: ISentiment
+  username: string
+  name: string
 }
 
 export interface ISentiment {

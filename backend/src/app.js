@@ -3,7 +3,7 @@ import { env, mongo, port, ip, apiRoot } from './config'
 import mongoose from './services/mongoose'
 import express from './services/express'
 import api from './api'
-import { publishTweet } from './api/rewards/controller'
+import { send } from './api/rewards/controller'
 const app = express(apiRoot, api)
 const server = http.createServer(app)
 
@@ -14,6 +14,7 @@ mongoose.Promise = Promise
 
 setImmediate(() => {
   server.listen(port, ip, () => {
+    // send()
     console.log('Express server listening on http://%s:%d, in %s mode', ip, port, env)
   })
 })

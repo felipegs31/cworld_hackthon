@@ -10,10 +10,11 @@ export const fetchTwitter = async (campaign) => {
     },
     json: true
   })
+
   const data = response.data.map((item, index) => {
     return {
-      ...item,
-      ...response.includes.users[index]
+      ...response.includes.users[index],
+      ...item
     }
   })
   return {
