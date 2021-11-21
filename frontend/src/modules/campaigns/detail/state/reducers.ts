@@ -15,6 +15,7 @@ export const INITIAL_STATE: ICampaignDetailState = {
   error: false,
   campaign: {} as ICampaign,
   tweets: [] as ITweet[],
+  positiveTweets: 0,
   tab: ECampaignTabs.CAMPAIGNDETAILS
 }
 
@@ -59,10 +60,14 @@ const scanInfluencersSuccess = (state: ICampaignDetailState, {type, payload}: {
   type: string,
   payload: {data: Array<ITweet>}
 } ): ICampaignDetailState => {
+
+  const positive = payload.data.filter(tweet => tweet.sentiment.SentimentScore.Positive > 0.90) || []
+
   return {
     ...state,
     loading: false,
     tweets: payload.data,
+    positiveTweets: positive.length
   }
 }
 

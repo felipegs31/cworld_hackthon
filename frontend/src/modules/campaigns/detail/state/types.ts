@@ -26,6 +26,7 @@ export interface ICampaignDetailState {
   readonly loading: boolean
   readonly error: boolean
   readonly campaign: ICampaign
+  readonly positiveTweets: number
   readonly tweets: Array<ITweet>
   readonly tab: ECampaignTabs,
 }
