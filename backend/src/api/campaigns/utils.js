@@ -4,7 +4,7 @@ import AWS from 'aws-sdk'
 export const fetchTwitter = async (campaign) => {
   const response = await rp({
     method: 'GET',
-    uri: `https://api.twitter.com/2/tweets/search/recent?tweet.fields=lang,created_at&expansions=author_id&user.fields=name,username&query=${campaign.queryText} lang:pt`,
+    uri: `https://api.twitter.com/2/tweets/search/recent?tweet.fields=lang,created_at&expansions=author_id&user.fields=name,username&query=${campaign.queryText} lang:en`,
     headers: {
       'Authorization': `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
     },
