@@ -11,6 +11,10 @@ export enum ActionTypes {
   ADD_KEY_USER_REQUEST = '@creators_list/ADD_KEY_USER_REQUEST',
   ADD_KEY_USER_SUCCESS = '@creators_list/ADD_KEY_USER_SUCCESS',
   ADD_KEY_USER_ERROR = '@creators_list/ADD_KEY_USER_ERROR',
+
+  CLAIM_REQUEST = '@creators_list/CLAIM_REQUEST',
+  CLAIM_SUCCESS = '@creators_list/CLAIM_SUCCESS',
+  CLAIM_ERROR = '@creators_list/CLAIM_ERROR',
 }
 
 

@@ -41,8 +41,8 @@ function WrappedApp() {
         chainId: 44787,
       }}
       dapp={{
-          name: "My awesome dApp",
-          description: "My awesome description",
+          name: "CWorld",
+          description: "Creators World",
           url: "https://example.com",
         }}
     >
