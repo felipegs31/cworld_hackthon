@@ -44,7 +44,8 @@ rewardsSchema.methods = {
       campaign: this.campaign,
       positivity: this.positivity,
       tweetId: this.tweetId,
-      claimed: this.claimed
+      claimed: this.claimed,
+      receipt: this.receipt
     }
 
     return full ? {
