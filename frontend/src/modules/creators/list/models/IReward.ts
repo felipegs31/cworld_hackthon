@@ -6,5 +6,9 @@ export interface IReward {
   key: string
   positivity: number
   tweetId: string
+  receipt: {
+    link: string 
+  }
+
 }
 

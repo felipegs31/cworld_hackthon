@@ -21,7 +21,8 @@ import {
   Icon
 } from '@material-ui/core/'
 import TweetEmbed from 'react-tweet-embed'
-import { CheckCircle } from '@material-ui/icons';
+import { CheckCircle, Receipt } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -53,6 +54,11 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 0,
     right: 0
+  },
+  claimed: {
+    position: 'absolute',
+    top: 0,
+    left: 0
   }
 }))
 
@@ -96,6 +102,10 @@ const Creators: React.FC = () => {
     rewardsListRequest()
   }, [])
 
+  const openTab = (link: string) => {
+    window.open(link, '_blank');
+  }
+
   return (
     <>
       <div className={classes.root}>
@@ -124,6 +134,16 @@ const Creators: React.FC = () => {
                         Claim
                       </Button>
                       }
+                      {reward.claimed && <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        startIcon={<Receipt />}
+                        onClick={() => openTab(reward.receipt.link)}
+                        className={classes.claimed}
+                      >
+                      </Button>
+                      }
                      <TweetEmbed id={reward.tweetId} key={reward.tweetId}/>
                   </Grid>)}
               </Grid>
@@ -143,7 +163,7 @@ const Creators: React.FC = () => {
             </FormControl>
             <FormControl fullWidth margin='normal' required>
               <TextField
-                label="Walled PUBLIC Key"
+                label="Walled address"
                 value={walletAddress}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setWalletAddress(event.target.value)

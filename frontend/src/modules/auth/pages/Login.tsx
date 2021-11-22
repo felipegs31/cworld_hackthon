@@ -13,7 +13,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-
+import Logo from './../Logo Cworld.png'
 import * as actions from './../state/actions';
 import SpinnerOverlay from '../../../design-system/SpinnerOverlay/SpinnerOverlay';
 import { IApplicationState } from '../../../store/roots/rootReducer';
@@ -55,6 +55,9 @@ const useStyles = makeStyles(theme => ({
   },
   appbar: {
     height: 64
+  },
+  logo: {
+    display: 'flex'
   }
 }));
 
@@ -91,9 +94,9 @@ const Login: React.FC = () => {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          <Typography variant="h2" gutterBottom>
-            CWorld
-          </Typography>
+          <div className={classes.logo}>
+            <img src={Logo}/>
+          </div>
           <form className={classes.form} noValidate>
             {loading && <div className={classes.overlay}></div>}
             {loading && <SpinnerOverlay />}

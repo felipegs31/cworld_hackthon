@@ -8,14 +8,24 @@ import Creators from './modules/creators/list/pages/Creators'
 import { useContractKit, Alfajores, NetworkNames } from '@celo-tools/use-contractkit';
 import { ContractKitProvider } from '@celo-tools/use-contractkit';
 import '@celo-tools/use-contractkit/lib/styles.css';
-
+import {
+  Typography,
+  IconButton,
+  TextField,
+  FormControl,
+  Slider,
+  FormLabel,
+  Grid,
+  Button,
+  Icon
+} from '@material-ui/core/'
 
 const PrivateRoutes = () => {
   const { address, connect } = useContractKit()
 
   return (
     <>
-      <button onClick={connect}>Click here to connect your wallet</button>
+      <Button onClick={connect}>Click here to connect your wallet</Button>
       <Switch>
         <Route path='/' exact component={Lobby} />
         <Route path='/company/campaigns' exact component={Campaigns} />
