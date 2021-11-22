@@ -7,4 +7,4 @@ The project is devided in 2 parts, beeing them:
  1. **BACKEND**
  2. **FRONTEND**
  
- ![Screenshot](cword.drawio (1).png)
+ ![Screenshot](architecture.png)
