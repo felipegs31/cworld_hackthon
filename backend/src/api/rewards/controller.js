@@ -73,7 +73,7 @@ export const createReward = (campaign, tweet) => {
     campaign: campaign._id,
     positivity: tweet.sentiment.SentimentScore.Positive,
     tweetId: tweet.id,
-    value: 0.1
+    value: 5
   })
     .then(reward => {
       console.log("reward created", reward)
