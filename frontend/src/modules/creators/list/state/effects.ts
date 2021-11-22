@@ -5,7 +5,9 @@ import createQueryParams from '../../../../utils/createQueryParams';
 import { rewardsListSuccess,
          rewardsListError,
 		 addKeySuccess,
-		 addKeyError
+		 addKeyError,
+		 claimSuccess,
+		 claimError
          } from './actions'
 import { IApplicationState } from '../../../../store/roots/rootReducer';
 import { IReward } from '../models/IReward';
@@ -44,6 +46,26 @@ export function* handleAddKeyRequest({ type, payload }: {
 			  yield put(addKeyError(err.stack!))
 		  } else {
 			  yield put(addKeyError('An unknown error occured.'))
+		  }
+	  }
+  }
+  
+
+  export function* handleClaimRequest({ type, payload }: {
+	type: string,
+	payload: {rewardId: string}
+  }): Generator{
+	  try {
+	  const res: any = yield API.post(`rewards/${payload.rewardId}/claim`)
+	  const data: any = res.data
+	  yield put(claimSuccess(data))
+	  toastr.success('Claimed!', 'Your Reward was claimed')
+  
+	  } catch (err) {
+		  if (err instanceof Error) {
+			  yield put(claimError(err.stack!))
+		  } else {
+			  yield put(claimError('An unknown error occured.'))
 		  }
 	  }
   }

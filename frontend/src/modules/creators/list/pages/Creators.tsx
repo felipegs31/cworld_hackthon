@@ -21,6 +21,7 @@ import {
   Icon
 } from '@material-ui/core/'
 import TweetEmbed from 'react-tweet-embed'
+import { CheckCircle } from '@material-ui/icons';
 
 
 const useStyles = makeStyles(theme => ({
@@ -44,6 +45,14 @@ const useStyles = makeStyles(theme => ({
     marginTop: 30,
     fontSize: '2rem',
     textAlign: 'center'
+  },
+  claimContainer: {
+    position: 'relative'
+  },
+  claim: {
+    position: 'absolute',
+    top: 0,
+    right: 0
   }
 }))
 
@@ -79,6 +88,10 @@ const Creators: React.FC = () => {
     dispatch(actions.rewardsListRequest())
   }
 
+  const claim = (rewardId: string) => {
+    dispatch(actions.claimRequest(rewardId))
+  }
+
   useEffect(() => {
     rewardsListRequest()
   }, [])
@@ -99,9 +112,20 @@ const Creators: React.FC = () => {
                 {loading && <div className={classes.overlay}></div>}
                 {loading && <SpinnerOverlay />}
                 {rewards.rows.map(reward => 
-                  <div key={reward.id}>
+                  <Grid item xs={6} className={`${classes.claimContainer}`} key={reward.id}>
+                      {!reward.claimed && <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        startIcon={<CheckCircle />}
+                        onClick={() => claim(reward.id)}
+                        className={classes.claim}
+                      >
+                        Claim
+                      </Button>
+                      }
                      <TweetEmbed id={reward.tweetId} key={reward.tweetId}/>
-                  </div>)}
+                  </Grid>)}
               </Grid>
             </div>
             {(isEmpty(rewards.rows) && !loading) && <div className={classes.noReviewMessage}>No Reward Found</div>}

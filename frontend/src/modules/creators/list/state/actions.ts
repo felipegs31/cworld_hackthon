@@ -16,8 +16,20 @@ export const rewardsListError = (message: string) =>
 export const addKeyRequest = (twitterId: string, walletAddress: string) => {
   return action(ActionTypes.ADD_KEY_USER_REQUEST, {twitterId, walletAddress})
 }
+
 export const addKeySuccess = (data: IPayload<IReward[]>) =>
   action(ActionTypes.ADD_KEY_USER_SUCCESS, data)
 
 export const addKeyError = (message: string) =>
   action(ActionTypes.ADD_KEY_USER_ERROR, message)
+
+
+export const claimRequest = (rewardId: string) => {
+  return action(ActionTypes.CLAIM_REQUEST, {rewardId})
+}
+
+export const claimSuccess = (data: IPayload<IReward[]>) =>
+  action(ActionTypes.CLAIM_SUCCESS, data)
+
+export const claimError = (message: string) =>
+  action(ActionTypes.CLAIM_ERROR, message)
