@@ -19,6 +19,7 @@ const rewardsSchema = new Schema({
     type: Boolean,
     default: false
   },
+  receipt: Object,
   value: Number,
   deleted: {
     type: Boolean,
