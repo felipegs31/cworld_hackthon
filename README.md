@@ -43,3 +43,14 @@ This is the entry file of the API. It defines the routes using, along other midd
 ### services/
 
 Here you can put `helpers`, `libraries` and other types of modules which you want to use in your APIs.
+
+
+## Playing locally the FE
+
+npm start
+Runs the app in the development mode.
+Open http://localhost:3000 to view it in the browser.
+
+The page will reload if you make edits.
+
+
